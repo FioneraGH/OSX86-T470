@@ -17904,6 +17904,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Name (BT0P, Package (0x04) {})
                 Method (_STA, 0, NotSerialized)  // _STA: Status
                 {
+                    Return (Zero)
                     If (\H8DR)
                     {
                         B0ST = HB0A
@@ -17968,7 +17969,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Return (BT0I)
                 }
 
-                Method (_BIX, 0, NotSerialized)  // _BIX: Battery Information Extended
+                Method (XBIX, 0, NotSerialized)  // _BIX: Battery Information Extended
                 {
                     Local7 = 0x00
                     Local6 = 0x0A
@@ -18212,7 +18213,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Return (BT1I)
                 }
 
-                Method (_BIX, 0, NotSerialized)  // _BIX: Battery Information Extended
+                Method (XBIX, 0, NotSerialized)  // _BIX: Battery Information Extended
                 {
                     Local7 = 0x00
                     Local6 = 0x0A
