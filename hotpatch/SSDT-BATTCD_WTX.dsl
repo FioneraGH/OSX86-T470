@@ -54,8 +54,8 @@ DefinitionBlock ("", "SSDT", 2, "hack", "BATTCD", 0x00000000)
 
             Method (_STA, 0, NotSerialized)  // _STA: Status
             {
-                Return (0x1F)
-                // Return ((\_SB.PCI0.LPCB.EC.BAT0._STA () | \_SB.PCI0.LPCB.EC.BAT1._STA ()))
+                // Return (0x1F)
+                Return ((\_SB.PCI0.LPCB.EC.BAT0._STA () | \_SB.PCI0.LPCB.EC.BAT1._STA ()))
             }
 
             Name (B0CO, Zero)

@@ -13,8 +13,6 @@ DSDT patched list:
 
 1. duplicate RTKB was removed (compile fix)
 
-1. BAT0._STA/BAT1._STA has inserted "Return 0" for combining them to BATC which
-   defined in BATTCD hotpatch
-
-1. BAT0/BAT1._BIX has been renamed to XBIX
+1. BAT0._STA/BAT1._STA has inserted "Return 0" to disable them, so BATC which
+   defined in BATTCD hotpatch can fetch _BST and _BIF(reverted)
 

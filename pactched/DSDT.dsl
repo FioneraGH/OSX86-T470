@@ -17494,12 +17494,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                SBRC,   16, 
-                SBFC,   16, 
+                BRC0, 8,BRC1, 8, 
+                BFC0, 8,BFC1, 8, 
                 SBAE,   16, 
                 SBRS,   16, 
-                SBAC,   16, 
-                SBVO,   16, 
+                BAC0, 8,BAC1, 8, 
+                BVO0, 8,BVO1, 8, 
                 SBAF,   16, 
                 SBBS,   16
             }
@@ -17507,32 +17507,32 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                SBBM,   16, 
+                BBM0, 8,BBM1, 8, 
                 SBMD,   16, 
-                SBCC,   16
+                BCC0, 8,BCC1, 8
             }
 
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                SBDC,   16, 
-                SBDV,   16, 
+                BDC0, 8,BDC1, 8, 
+                BDV0, 8,BDV1, 8, 
                 SBOM,   16, 
                 SBSI,   16, 
                 SBDT,   16, 
-                SBSN,   16
+                BSN0, 8,BSN1, 8
             }
 
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                SBCH,   32
+                BCH0, 8,BCH1, 8,BCH2, 8,BCH3, 8
             }
 
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                SBMN,   128
+                BMNX, 128 // SBMN, 128
             }
 
             Field (ECOR, ByteAcc, NoLock, Preserve)
@@ -17548,28 +17548,28 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 If (Arg2)
                 {
                     HIID = (Arg0 | 0x01)
-                    Local7 = SBBM
+                    Local7 = B1B2(BBM0, BBM1)
                     Local7 >>= 0x0F
                     Arg1 [0x00] = (Local7 ^ 0x01)
                     HIID = Arg0
                     If (Local7)
                     {
-                        Local1 = (SBFC * 0x0A)
+                        Local1 = (B1B2(BFC0, BFC1) * 0x0A)
                     }
                     Else
                     {
-                        Local1 = SBFC
+                        Local1 = B1B2(BFC0, BFC1)
                     }
 
                     Arg1 [0x02] = Local1
                     HIID = (Arg0 | 0x02)
                     If (Local7)
                     {
-                        Local0 = (SBDC * 0x0A)
+                        Local0 = (B1B2(BDC0, BDV1) * 0x0A)
                     }
                     Else
                     {
-                        Local0 = SBDC
+                        Local0 = B1B2(BDC0, BDV1)
                     }
 
                     Arg1 [0x01] = Local0
@@ -17578,17 +17578,17 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     {
                         Arg1 [0x06] = 0xC8
                     }
-                    ElseIf (SBDV)
+                    ElseIf (B1B2(BDV0, BDV1))
                     {
-                        Divide (0x00030D40, SBDV, Local2, Arg1 [0x06])
+                        Divide (0x00030D40, B1B2(BDV0, BDV1), Local2, Arg1 [0x06])
                     }
                     Else
                     {
                         Arg1 [0x06] = 0x00
                     }
 
-                    Arg1 [0x04] = SBDV
-                    Local0 = SBSN
+                    Arg1 [0x04] = B1B2(BDV0, BDV1)
+                    Local0 = B1B2(BSN0, BSN1)
                     Name (SERN, Buffer (0x06)
                     {
                         "     "
@@ -17603,16 +17603,16 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                     Arg1 [0x0A] = SERN
                     HIID = (Arg0 | 0x06)
-                    Arg1 [0x09] = SBDN
+                    Arg1 [0x09] = RECB(0xA0, 128)
                     HIID = (Arg0 | 0x04)
                     Name (BTYP, Buffer (0x05)
                     {
                          0x00, 0x00, 0x00, 0x00, 0x00                   
                     })
-                    BTYP = SBCH
+                    BTYP = B1B4(BCH0, BCH1, BCH2, BCH3)
                     Arg1 [0x0B] = BTYP
                     HIID = (Arg0 | 0x05)
-                    Arg1 [0x0C] = SBMN
+                    Arg1 [0x0C] = RECB(0xA0, 128)
                 }
                 Else
                 {
@@ -17632,30 +17632,30 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 If (Arg2)
                 {
                     HIID = (Arg0 | 0x01)
-                    Local7 = SBCC
+                    Local7 = B1B2(BCC0, BCC1)
                     Arg1 [0x08] = Local7
-                    Local7 = SBBM
+                    Local7 = B1B2(BBM0, BBM1)
                     Local7 >>= 0x0F
                     Arg1 [0x01] = (Local7 ^ 0x01)
                     HIID = Arg0
                     If (Local7)
                     {
-                        Local1 = (SBFC * 0x0A)
+                        Local1 = (B1B2(BFC0, BFC1) * 0x0A)
                     }
                     Else
                     {
-                        Local1 = SBFC
+                        Local1 = B1B2(BFC0, BFC1)
                     }
 
                     Arg1 [0x03] = Local1
                     HIID = (Arg0 | 0x02)
                     If (Local7)
                     {
-                        Local0 = (SBDC * 0x0A)
+                        Local0 = (B1B2(BDC0, BDV1) * 0x0A)
                     }
                     Else
                     {
-                        Local0 = SBDC
+                        Local0 = B1B2(BDC0, BDV1)
                     }
 
                     Arg1 [0x02] = Local0
@@ -17664,17 +17664,17 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     {
                         Arg1 [0x07] = 0xC8
                     }
-                    ElseIf (SBDV)
+                    ElseIf (B1B2(BDV0, BDV1))
                     {
-                        Divide (0x00030D40, SBDV, Local2, Arg1 [0x07])
+                        Divide (0x00030D40, B1B2(BDV0, BDV1), Local2, Arg1 [0x07])
                     }
                     Else
                     {
                         Arg1 [0x07] = 0x00
                     }
 
-                    Arg1 [0x05] = SBDV
-                    Local0 = SBSN
+                    Arg1 [0x05] = B1B2(BDV0, BDV1)
+                    Local0 = B1B2(BSN0, BSN1)
                     Name (SERN, Buffer (0x06)
                     {
                         "     "
@@ -17689,16 +17689,16 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                     Arg1 [0x11] = SERN
                     HIID = (Arg0 | 0x06)
-                    Arg1 [0x10] = SBDN
+                    Arg1 [0x10] = RECB(0xA0, 128)
                     HIID = (Arg0 | 0x04)
                     Name (BTYP, Buffer (0x05)
                     {
                          0x00, 0x00, 0x00, 0x00, 0x00                   
                     })
-                    BTYP = SBCH
+                    BTYP = B1B4(BCH0, BCH1, BCH2, BCH3)
                     Arg1 [0x12] = BTYP
                     HIID = (Arg0 | 0x05)
-                    Arg1 [0x13] = SBMN
+                    Arg1 [0x13] = RECB(0xA0, 128)
                 }
                 Else
                 {
@@ -17752,17 +17752,17 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Else
                 {
                     HIID = Arg0
-                    Local3 = SBVO
+                    Local3 = B1B2(BVO0,BVO1)
                     If (Arg2)
                     {
-                        Local2 = (SBRC * 0x0A)
+                        Local2 = (B1B2(BRC0,BRC1) * 0x0A)
                     }
                     Else
                     {
-                        Local2 = SBRC
+                        Local2 = B1B2(BRC0,BRC1)
                     }
 
-                    Local1 = SBAC
+                    Local1 = B1B2(BAC0,BAC1)
                     If ((Local1 >= 0x8000))
                     {
                         If ((Local0 & 0x01))
@@ -17904,7 +17904,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Name (BT0P, Package (0x04) {})
                 Method (_STA, 0, NotSerialized)  // _STA: Status
                 {
-                    Return (Zero)
                     If (\H8DR)
                     {
                         B0ST = HB0A
@@ -17969,7 +17968,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Return (BT0I)
                 }
 
-                Method (XBIX, 0, NotSerialized)  // _BIX: Battery Information Extended
+                Method (_BIX, 0, NotSerialized)  // _BIX: Battery Information Extended
                 {
                     Local7 = 0x00
                     Local6 = 0x0A
@@ -18074,7 +18073,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Name (BT1P, Package (0x04) {})
                 Method (_STA, 0, NotSerialized)  // _STA: Status
                 {
-                    Return (Zero)
                     If (\H8DR)
                     {
                         If (HB1A)
@@ -18213,7 +18211,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Return (BT1I)
                 }
 
-                Method (XBIX, 0, NotSerialized)  // _BIX: Battery Information Extended
+                Method (_BIX, 0, NotSerialized)  // _BIX: Battery Information Extended
                 {
                     Local7 = 0x00
                     Local6 = 0x0A
@@ -18384,6 +18382,28 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         Return (Local2)
                     }
                 }
+            }
+            Method (RE1B, 1, NotSerialized)
+            {
+                OperationRegion(ERAM, EmbeddedControl, Arg0, 1)
+                Field(ERAM, ByteAcc, NoLock, Preserve) { BYTE, 8 }
+                Return(BYTE)
+            }
+            Method (RECB, 2, Serialized)
+            // Arg0 - offset in bytes from zero-based EC
+            // Arg1 - size of buffer in bits
+            {
+                ShiftRight(Add(Arg1,7), 3, Arg1)
+                Name(TEMP, Buffer(Arg1) { })
+                Add(Arg0, Arg1, Arg1)
+                Store(0, Local0)
+                While (LLess(Arg0, Arg1))
+                {
+                    Store(RE1B(Arg0), Index(TEMP, Local0))
+                    Increment(Arg0)
+                    Increment(Local0)
+                }
+                Return(TEMP)
             }
         }
 
@@ -30332,6 +30352,15 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 \_SB.PCI0.LPCB.EC.LED (0x0A, 0xC0)
             }
         }
+    }
+    Method (B1B2, 2, NotSerialized) { Return(Or(Arg0, ShiftLeft(Arg1, 8))) }
+    Method (B1B4, 4, NotSerialized)
+    {
+        Store(Arg3, Local0)
+        Or(Arg2, ShiftLeft(Local0, 8), Local0)
+        Or(Arg1, ShiftLeft(Local0, 8), Local0)
+        Or(Arg0, ShiftLeft(Local0, 8), Local0)
+        Return(Local0)
     }
 }
 
