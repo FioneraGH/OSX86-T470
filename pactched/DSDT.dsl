@@ -17904,7 +17904,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Name (BT0P, Package (0x04) {})
                 Method (_STA, 0, NotSerialized)  // _STA: Status
                 {
-                    Return (Zero)
                     If (\H8DR)
                     {
                         B0ST = HB0A
