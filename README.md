@@ -11,7 +11,10 @@ future perhaps.
 
 DSDT patched list:
 
-1. duplicate RTKB was removed
+1. duplicate RTKB was removed (compile fix)
 
-1. BAT0._STA/BAT1._STA has "Return 0" for combining them to BATC
+1. BAT0._STA/BAT1._STA has inserted "Return 0" for combining them to BATC which
+   defined in BATTCD hotpatch
+
+1. BAT0/BAT1._BIX has been renamed to XBIX
 
