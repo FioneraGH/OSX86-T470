@@ -16,3 +16,5 @@ DSDT patched list:
 1. BAT0._STA/BAT1._STA has inserted "Return 0" to disable them, so BATC which
    defined in BATTCD hotpatch can fetch _BST and _BIF(reverted)
 
+1. patch XHC.PMEE = 0 when S5 for shutdown trigger restart
+
