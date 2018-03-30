@@ -18,3 +18,5 @@ DSDT patched list:
 
 1. patch XHC.PMEE = 0 when S5 for shutdown trigger restart
 
+1. Fix _WAK Arg0 v2 & USB3 _PWR for instant wake
+
