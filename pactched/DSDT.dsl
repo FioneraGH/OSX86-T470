@@ -5211,10 +5211,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 PMES,   1
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x04))
-            }
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -5234,6 +5231,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Notify (GLAN, 0x02)
                 }
             }
+            Method(_PRW) { Return(Package() { 0x6D, 0 }) }
         }
     }
 
@@ -5369,12 +5367,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             {
                 \_SB.PCI0.LPCB.EC.PUBS
             })
-            Name (_PRW, Package (0x03)  // _PRW: Power Resources for Wake
-            {
-                0x6D, 
-                0x03, 
-                \_SB.PCI0.LPCB.EC.PUBS
-            })
+            
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
                 PMEE = Arg0
@@ -5688,6 +5681,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     }
                 }
             }
+            Method(_PRW) { Return(Package() { 0x6D, 0 }) }
         }
     }
 
@@ -5980,10 +5974,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x04))
-            }
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -6004,6 +5995,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Notify (XDCI, 0x02)
                 }
             }
+            Method(_PRW) { Return(Package() { 0x6D, 0 }) }
         }
     }
 
@@ -6033,10 +6025,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 PMEE = Arg0
             }
 
-            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
-            {
-                Return (GPRW (0x6D, 0x04))
-            }
+            
 
             Method (GPEH, 0, NotSerialized)
             {
@@ -6164,6 +6153,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                      0x00                                           
                 })
             }
+            Method(_PRW) { Return(Package() { 0x6D, 0 }) }
         }
 
         Device (RP01)
@@ -14410,6 +14400,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     LPD3 (SB1A)
                 }
             }
+            Method(_PRW) { Return(Package() { 0x6D, 0 }) }
         }
     }
 
@@ -19553,7 +19544,8 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
     Method (_WAK, 1, Serialized)  // _WAK: Wake
     {
-        D8XH (0x01, 0xAB)
+        If (LOr(LLess(Arg0,1),LGreater(Arg0,5))) { Store(3,Arg0) }
+D8XH (0x01, 0xAB)
         ADBG ("_WAK")
         \_SB.PCI0.GEXP.INVC ()
         If ((S0ID == One))
@@ -20128,7 +20120,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     OSYS = 0x07D9
                 }
 
-                If (\_OSI ("Windows 2012"))
+                If(LOr(_OSI("Darwin"), _OSI("Windows 2012")))
                 {
                     \WIN8 = 0x01
                     OSYS = 0x07DC
