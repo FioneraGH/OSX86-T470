@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-6-CtdpB.aml, Sat Mar 17 09:47:21 2018
+ * Disassembly of SSDT-6-CtdpB.aml, Fri Apr 20 09:19:38 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
- *     Length           0x0000050D (1293)
+ *     Length           0x0000056D (1389)
  *     Revision         0x02
- *     Checksum         0x56
+ *     Checksum         0x55
  *     OEM ID           "LENOVO"
  *     OEM Table ID     "CtdpB"
  *     OEM Revision     0x00001000 (4096)
@@ -21,23 +21,30 @@
 DefinitionBlock ("", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
 {
     External (_PR_.CPPC, IntObj)    // (from opcode)
-    External (_PR_.CPU0, DeviceObj)    // (from opcode)
-    External (_PR_.CPU0._PSS, MethodObj)    // 0 Arguments
-    External (_PR_.CPU0.LPSS, PkgObj)    // (from opcode)
-    External (_PR_.CPU0.TPSS, PkgObj)    // (from opcode)
-    External (_PR_.CPU1, DeviceObj)    // (from opcode)
-    External (_PR_.CPU2, DeviceObj)    // (from opcode)
-    External (_PR_.CPU3, DeviceObj)    // (from opcode)
-    External (_PR_.CPU4, DeviceObj)    // (from opcode)
-    External (_PR_.CPU5, DeviceObj)    // (from opcode)
-    External (_PR_.CPU6, DeviceObj)    // (from opcode)
-    External (_PR_.CPU7, DeviceObj)    // (from opcode)
+    External (_PR_.PR00, DeviceObj)    // (from opcode)
+    External (_PR_.PR00._PSS, MethodObj)    // 0 Arguments
+    External (_PR_.PR00.LPSS, PkgObj)    // (from opcode)
+    External (_PR_.PR00.TPSS, PkgObj)    // (from opcode)
+    External (_PR_.PR01, DeviceObj)    // (from opcode)
+    External (_PR_.PR02, DeviceObj)    // (from opcode)
+    External (_PR_.PR03, DeviceObj)    // (from opcode)
+    External (_PR_.PR04, DeviceObj)    // (from opcode)
+    External (_PR_.PR05, DeviceObj)    // (from opcode)
+    External (_PR_.PR06, DeviceObj)    // (from opcode)
+    External (_PR_.PR07, DeviceObj)    // (from opcode)
+    External (_PR_.PR08, DeviceObj)    // (from opcode)
+    External (_PR_.PR09, DeviceObj)    // (from opcode)
+    External (_PR_.PR10, DeviceObj)    // (from opcode)
+    External (_PR_.PR11, DeviceObj)    // (from opcode)
+    External (_PR_.PR12, DeviceObj)    // (from opcode)
+    External (_PR_.PR13, DeviceObj)    // (from opcode)
+    External (_PR_.PR14, DeviceObj)    // (from opcode)
+    External (_PR_.PR15, DeviceObj)    // (from opcode)
     External (_SB_.OSCP, IntObj)    // (from opcode)
     External (_SB_.PCI0, DeviceObj)    // (from opcode)
     External (CTPC, UnknownObj)    // (from opcode)
     External (CTPR, UnknownObj)    // (from opcode)
     External (FTPS, UnknownObj)    // (from opcode)
-    External (PDC0, IntObj)    // (from opcode)
     External (PNHM, FieldUnitObj)    // (from opcode)
     External (PNTF, MethodObj)    // 1 Arguments (from opcode)
     External (PT0D, UnknownObj)    // (from opcode)
@@ -172,15 +179,15 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
         Method (NPPC, 1, Serialized)
         {
             TRAT = Arg0
-            If (CondRefOf (\_PR.CPU0._PSS))
+            If (CondRefOf (\_PR.PR00._PSS))
             {
                 If ((\_SB.OSCP & 0x0400))
                 {
-                    TMPI = SizeOf (\_PR.CPU0.TPSS)
+                    TMPI = SizeOf (\_PR.PR00.TPSS)
                 }
                 Else
                 {
-                    TMPI = SizeOf (\_PR.CPU0.LPSS)
+                    TMPI = SizeOf (\_PR.PR00.LPSS)
                 }
 
                 While ((TMPI != Zero))
@@ -188,11 +195,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
                     TMPI--
                     If ((\_SB.OSCP & 0x0400))
                     {
-                        PRAT = DerefOf (DerefOf (\_PR.CPU0.TPSS [TMPI]) [0x04])
+                        PRAT = DerefOf (DerefOf (\_PR.PR00.TPSS [TMPI]) [0x04])
                     }
                     Else
                     {
-                        PRAT = DerefOf (DerefOf (\_PR.CPU0.LPSS [TMPI]) [0x04])
+                        PRAT = DerefOf (DerefOf (\_PR.PR00.LPSS [TMPI]) [0x04])
                     }
 
                     PRAT >>= 0x08

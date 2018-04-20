@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of DSDT.aml, Fri Apr 20 09:19:38 2018
+ * Disassembly of DSDT.aml, Sat Mar 17 09:47:21 2018
  *
  * Original Table Header:
  *     Signature        "DSDT"
- *     Length           0x00020F40 (134976)
+ *     Length           0x00020845 (133189)
  *     Revision         0x02
- *     Checksum         0xC6
+ *     Checksum         0xC1
  *     OEM ID           "LENOVO"
  *     OEM Table ID     "SKL     "
  *     OEM Revision     0x00000000 (0)
@@ -26,6 +26,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     External (_PR_.CFGD, UnknownObj)    // (from opcode)
     External (_PR_.CLVL, UnknownObj)    // (from opcode)
     External (_PR_.CPPC, IntObj)    // (from opcode)
+    External (_PR_.CPU0, DeviceObj)    // (from opcode)
+    External (_PR_.CPU0._PPC, MethodObj)    // 0 Arguments
+    External (_PR_.CPU0._PSS, MethodObj)    // 0 Arguments
+    External (_PR_.CPU0.LPSS, PkgObj)    // (from opcode)
+    External (_PR_.CPU0.TPSS, PkgObj)    // (from opcode)
     External (_PR_.DSAE, UnknownObj)    // (from opcode)
     External (_PR_.DTS1, UnknownObj)    // (from opcode)
     External (_PR_.DTS2, UnknownObj)    // (from opcode)
@@ -39,11 +44,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     External (_PR_.PDTS, UnknownObj)    // (from opcode)
     External (_PR_.PKGA, UnknownObj)    // (from opcode)
     External (_PR_.POWS, UnknownObj)    // (from opcode)
-    External (_PR_.PR00, DeviceObj)    // (from opcode)
-    External (_PR_.PR00._PPC, MethodObj)    // 0 Arguments
-    External (_PR_.PR00._PSS, MethodObj)    // 0 Arguments
-    External (_PR_.PR00.LPSS, PkgObj)    // (from opcode)
-    External (_PR_.PR00.TPSS, PkgObj)    // (from opcode)
     External (_PR_.TRPD, UnknownObj)    // (from opcode)
     External (_PR_.TRPF, UnknownObj)    // (from opcode)
     External (_SB_.GGIV, MethodObj)    // 1 Arguments (from opcode)
@@ -75,6 +75,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     External (_SB_.PCI0.PEG2, DeviceObj)    // (from opcode)
     External (_SB_.PCI0.PTDP, UnknownObj)    // (from opcode)
     External (_SB_.PCI0.PWRS, FieldUnitObj)
+    External (_SB_.PCI0.RP01.LTRE, IntObj)
     External (_SB_.PCI0.RP05.PWRG, UnknownObj)    // (from opcode)
     External (_SB_.PCI0.RP05.RSTG, UnknownObj)    // (from opcode)
     External (_SB_.PCI0.RP05.SCLK, UnknownObj)    // (from opcode)
@@ -126,22 +127,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     External (M64L, UnknownObj)    // (from opcode)
     External (MMRP, MethodObj)    // 1 Arguments (from opcode)
     External (MMTB, MethodObj)    // 1 Arguments (from opcode)
-    External (PC00, IntObj)    // (from opcode)
-    External (PC01, UnknownObj)    // (from opcode)
-    External (PC02, UnknownObj)    // (from opcode)
-    External (PC03, UnknownObj)    // (from opcode)
-    External (PC04, UnknownObj)    // (from opcode)
-    External (PC05, UnknownObj)    // (from opcode)
-    External (PC06, UnknownObj)    // (from opcode)
-    External (PC07, UnknownObj)    // (from opcode)
-    External (PC08, UnknownObj)    // (from opcode)
-    External (PC09, UnknownObj)    // (from opcode)
-    External (PC10, UnknownObj)    // (from opcode)
-    External (PC11, UnknownObj)    // (from opcode)
-    External (PC12, UnknownObj)    // (from opcode)
-    External (PC13, UnknownObj)    // (from opcode)
-    External (PC14, UnknownObj)    // (from opcode)
-    External (PC15, UnknownObj)    // (from opcode)
+    External (PDC0, IntObj)    // (from opcode)
+    External (PDC1, UnknownObj)    // (from opcode)
+    External (PDC2, UnknownObj)    // (from opcode)
+    External (PDC3, UnknownObj)    // (from opcode)
+    External (PDC4, UnknownObj)    // (from opcode)
+    External (PDC5, UnknownObj)    // (from opcode)
+    External (PDC6, UnknownObj)    // (from opcode)
+    External (PDC7, UnknownObj)    // (from opcode)
     External (PTTB, UnknownObj)    // (from opcode)
     External (SGMD, UnknownObj)    // (from opcode)
     External (TBTD, MethodObj)    // 1 Arguments (from opcode)
@@ -3201,7 +3194,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     {
                         CTRL &= 0xFFFFFFE0
                     }
-                    ElseIf ((TBTS == 0x01))
+                    ElseIf (((TBTS == 0x01) && (TNAT == 0x01)))
                     {
                         CTRL &= 0xFFFFFFF7
                     }
@@ -5183,6 +5176,10 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
     Scope (\_SB.PCI0)
     {
+        Name (LTRZ, 0x00)
+        Name (OBFZ, 0x00)
+        Name (LMSL, 0x00)
+        Name (LNSL, 0x00)
         Device (GLAN)
         {
             Name (_ADR, 0x001F0006)  // _ADR: Address
@@ -5214,7 +5211,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 PMES,   1
             }
 
-
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -5496,63 +5493,10 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     UPSW,   2
                 }
 
-                Name (U3PS, Zero)
-                If ((PCHV () == SPTL))
-                {
-                    U3PS = 0x0540
-                }
-                Else
-                {
-                    U3PS = 0x0580
-                }
-
-                OperationRegion (UPSC, SystemMemory, (\XWMB + U3PS), 0x0100)
-                Field (UPSC, DWordAcc, Lock, Preserve)
-                {
-                    Offset (0x03), 
-                    CAS1,   1, 
-                    Offset (0x10), 
-                    Offset (0x13), 
-                    CAS2,   1, 
-                    Offset (0x20), 
-                    Offset (0x23), 
-                    CAS3,   1, 
-                    Offset (0x30), 
-                    Offset (0x33), 
-                    CAS4,   1, 
-                    Offset (0x40), 
-                    Offset (0x43), 
-                    CAS5,   1, 
-                    Offset (0x50), 
-                    Offset (0x53), 
-                    CAS6,   1, 
-                    Offset (0x60), 
-                    Offset (0x63), 
-                    CAS7,   1, 
-                    Offset (0x70), 
-                    Offset (0x73), 
-                    CAS8,   1, 
-                    Offset (0x80), 
-                    Offset (0x83), 
-                    CAS9,   1, 
-                    Offset (0x90), 
-                    Offset (0x93), 
-                    CASA,   1
-                }
-
                 UPSW = 0x03
-                STGE = 0x01
-                If (((((((CAS1 || CAS2) || CAS3) || CAS4) || CAS5) || CAS6) || ((PCHV () == SPTH) && (((CAS7 || CAS8) || CAS9) || CASA))))
-                {
-                    D3HE = 0x00
-                    Sleep (0x0A)
-                }
-                Else
-                {
-                    D3HE = 0x01
-                }
-
                 ^PDBM &= ~0x02
+                STGE = 0x01
+                D3HE = 0x01
                 ^D0D3 = 0x03
                 ^MEMB = Local2
                 ^PDBM = Local1
@@ -6030,7 +5974,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-
+            
 
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
@@ -6081,7 +6025,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 PMEE = Arg0
             }
 
-
+            
 
             Method (GPEH, 0, NotSerialized)
             {
@@ -6232,10 +6176,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR1
@@ -6321,12 +6261,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -6488,10 +6428,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR2
@@ -6577,12 +6513,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -6744,10 +6680,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR3
@@ -6833,12 +6765,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -7000,10 +6932,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR4
@@ -7089,12 +7017,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -7256,10 +7184,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR5
@@ -7345,12 +7269,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -7512,10 +7436,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR6
@@ -7601,12 +7521,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -7768,10 +7688,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR7
@@ -7857,12 +7773,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -8024,10 +7940,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR8
@@ -8113,12 +8025,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -8281,10 +8193,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTR9
@@ -8371,12 +8279,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -8538,10 +8446,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRA
@@ -8627,12 +8531,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -8794,10 +8698,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRB
@@ -8883,12 +8783,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -9050,10 +8950,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRC
@@ -9139,12 +9035,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -9306,10 +9202,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRD
@@ -9395,12 +9287,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -9562,10 +9454,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRE
@@ -9651,12 +9539,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -9818,10 +9706,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRF
@@ -9907,12 +9791,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -10074,10 +9958,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRG
@@ -10163,12 +10043,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -10330,10 +10210,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRH
@@ -10419,12 +10295,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -10586,10 +10462,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRI
@@ -10675,12 +10547,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -10842,10 +10714,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRJ
@@ -10931,12 +10799,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -11098,10 +10966,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRK
@@ -11187,12 +11051,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -11354,10 +11218,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRL
@@ -11443,12 +11303,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -11610,10 +11470,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRM
@@ -11699,12 +11555,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -11866,10 +11722,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRN
@@ -11955,12 +11807,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -12122,10 +11974,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 }
             }
 
-            Name (LTRZ, 0x00)
-            Name (OBFZ, 0x00)
-            Name (LMSL, 0x00)
-            Name (LNSL, 0x00)
             Method (_INI, 0, NotSerialized)  // _INI: Initialize
             {
                 LTRZ = LTRO
@@ -12211,12 +12059,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             If ((Arg1 >= 0x02))
                             {
                                 FUN0 = 0x01
-                                If (LTRZ)
+                                If (LTRE)
                                 {
                                     FUN6 = 0x01
                                 }
 
-                                If (OBFZ)
+                                If (OBFF)
                                 {
                                     FUN4 = 0x01
                                 }
@@ -13605,17 +13453,24 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Break
             }
 
-            If ((!DISA && !HDAA))
+            If (!HDAA)
             {
-                XSQD = 0x00
                 SLS0 = 0x01
+                XSQD = 0x00
                 \_SB.VMON ()
             }
             Else
             {
-                XSQD = 0x01
-                SLS0 = 0x00
                 \_SB.VMOF ()
+                SLS0 = DISA
+                If (!DISA)
+                {
+                    XSQD = 0x01
+                }
+                Else
+                {
+                    XSQD = 0x00
+                }
             }
         }
     }
@@ -17631,7 +17486,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             {
                 Offset (0xA0), 
                 BRC0, 8,BRC1, 8, 
-                BFC0, 8,BFC1, 8,  
+                BFC0, 8,BFC1, 8, 
                 SBAE,   16, 
                 SBRS,   16, 
                 BAC0, 8,BAC1, 8, 
@@ -17643,7 +17498,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                BBM0, 8,BBM1, 8,
+                BBM0, 8,BBM1, 8, 
                 SBMD,   16, 
                 BCC0, 8,BCC1, 8
             }
@@ -19690,7 +19545,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     Method (_WAK, 1, Serialized)  // _WAK: Wake
     {
         If (LOr(LLess(Arg0,1),LGreater(Arg0,5))) { Store(3,Arg0) }
-        D8XH (0x01, 0xAB)
+D8XH (0x01, 0xAB)
         ADBG ("_WAK")
         \_SB.PCI0.GEXP.INVC ()
         If ((S0ID == One))
@@ -19902,176 +19757,96 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     {
         If ((TCNT > 0x01))
         {
-            If ((\PC00 & 0x08))
+            If ((\PDC0 & 0x08))
             {
-                Notify (\_PR.PR00, 0x80)
+                Notify (\_PR.CPU0, 0x80)
             }
 
-            If ((\PC01 & 0x08))
+            If ((\PDC1 & 0x08))
             {
-                Notify (\_PR.PR01, 0x80)
+                Notify (\_PR.CPU1, 0x80)
             }
 
-            If ((\PC02 & 0x08))
+            If ((\PDC2 & 0x08))
             {
-                Notify (\_PR.PR02, 0x80)
+                Notify (\_PR.CPU2, 0x80)
             }
 
-            If ((\PC03 & 0x08))
+            If ((\PDC3 & 0x08))
             {
-                Notify (\_PR.PR03, 0x80)
+                Notify (\_PR.CPU3, 0x80)
             }
 
-            If ((\PC04 & 0x08))
+            If ((\PDC4 & 0x08))
             {
-                Notify (\_PR.PR04, 0x80)
+                Notify (\_PR.CPU4, 0x80)
             }
 
-            If ((\PC05 & 0x08))
+            If ((\PDC5 & 0x08))
             {
-                Notify (\_PR.PR05, 0x80)
+                Notify (\_PR.CPU5, 0x80)
             }
 
-            If ((\PC06 & 0x08))
+            If ((\PDC6 & 0x08))
             {
-                Notify (\_PR.PR06, 0x80)
+                Notify (\_PR.CPU6, 0x80)
             }
 
-            If ((\PC07 & 0x08))
+            If ((\PDC7 & 0x08))
             {
-                Notify (\_PR.PR07, 0x80)
-            }
-
-            If ((\PC08 & 0x08))
-            {
-                Notify (\_PR.PR08, 0x80)
-            }
-
-            If ((\PC09 & 0x08))
-            {
-                Notify (\_PR.PR09, 0x80)
-            }
-
-            If ((\PC10 & 0x08))
-            {
-                Notify (\_PR.PR10, 0x80)
-            }
-
-            If ((\PC11 & 0x08))
-            {
-                Notify (\_PR.PR11, 0x80)
-            }
-
-            If ((\PC12 & 0x08))
-            {
-                Notify (\_PR.PR12, 0x80)
-            }
-
-            If ((\PC13 & 0x08))
-            {
-                Notify (\_PR.PR13, 0x80)
-            }
-
-            If ((\PC14 & 0x08))
-            {
-                Notify (\_PR.PR14, 0x80)
-            }
-
-            If ((\PC15 & 0x08))
-            {
-                Notify (\_PR.PR15, 0x80)
+                Notify (\_PR.CPU7, 0x80)
             }
         }
         Else
         {
-            Notify (\_PR.PR00, 0x80)
+            Notify (\_PR.CPU0, 0x80)
         }
 
         If ((TCNT > 0x01))
         {
-            If (((\PC00 & 0x08) && (\PC00 & 0x10)))
+            If (((\PDC0 & 0x08) && (\PDC0 & 0x10)))
             {
-                Notify (\_PR.PR00, 0x81)
+                Notify (\_PR.CPU0, 0x81)
             }
 
-            If (((\PC01 & 0x08) && (\PC01 & 0x10)))
+            If (((\PDC1 & 0x08) && (\PDC1 & 0x10)))
             {
-                Notify (\_PR.PR01, 0x81)
+                Notify (\_PR.CPU1, 0x81)
             }
 
-            If (((\PC02 & 0x08) && (\PC02 & 0x10)))
+            If (((\PDC2 & 0x08) && (\PDC2 & 0x10)))
             {
-                Notify (\_PR.PR02, 0x81)
+                Notify (\_PR.CPU2, 0x81)
             }
 
-            If (((\PC03 & 0x08) && (\PC03 & 0x10)))
+            If (((\PDC3 & 0x08) && (\PDC3 & 0x10)))
             {
-                Notify (\_PR.PR03, 0x81)
+                Notify (\_PR.CPU3, 0x81)
             }
 
-            If (((\PC04 & 0x08) && (\PC04 & 0x10)))
+            If (((\PDC4 & 0x08) && (\PDC4 & 0x10)))
             {
-                Notify (\_PR.PR04, 0x81)
+                Notify (\_PR.CPU4, 0x81)
             }
 
-            If (((\PC05 & 0x08) && (\PC05 & 0x10)))
+            If (((\PDC5 & 0x08) && (\PDC5 & 0x10)))
             {
-                Notify (\_PR.PR05, 0x81)
+                Notify (\_PR.CPU5, 0x81)
             }
 
-            If (((\PC06 & 0x08) && (\PC06 & 0x10)))
+            If (((\PDC6 & 0x08) && (\PDC6 & 0x10)))
             {
-                Notify (\_PR.PR06, 0x81)
+                Notify (\_PR.CPU6, 0x81)
             }
 
-            If (((\PC07 & 0x08) && (\PC07 & 0x10)))
+            If (((\PDC7 & 0x08) && (\PDC7 & 0x10)))
             {
-                Notify (\_PR.PR07, 0x81)
-            }
-
-            If (((\PC08 & 0x08) && (\PC08 & 0x10)))
-            {
-                Notify (\_PR.PR08, 0x81)
-            }
-
-            If (((\PC09 & 0x08) && (\PC09 & 0x10)))
-            {
-                Notify (\_PR.PR09, 0x81)
-            }
-
-            If (((\PC10 & 0x08) && (\PC10 & 0x10)))
-            {
-                Notify (\_PR.PR10, 0x81)
-            }
-
-            If (((\PC11 & 0x08) && (\PC11 & 0x10)))
-            {
-                Notify (\_PR.PR11, 0x81)
-            }
-
-            If (((\PC12 & 0x08) && (\PC12 & 0x10)))
-            {
-                Notify (\_PR.PR12, 0x81)
-            }
-
-            If (((\PC13 & 0x08) && (\PC13 & 0x10)))
-            {
-                Notify (\_PR.PR13, 0x81)
-            }
-
-            If (((\PC14 & 0x08) && (\PC14 & 0x10)))
-            {
-                Notify (\_PR.PR14, 0x81)
-            }
-
-            If (((\PC15 & 0x08) && (\PC15 & 0x10)))
-            {
-                Notify (\_PR.PR15, 0x81)
+                Notify (\_PR.CPU7, 0x81)
             }
         }
         Else
         {
-            Notify (\_PR.PR00, 0x81)
+            Notify (\_PR.CPU0, 0x81)
         }
 
         If ((DPTF == 0x01))
@@ -20150,7 +19925,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     ADBG ("Exit Resiliency")
                     If (PSCP)
                     {
-                        If (CondRefOf (\_PR.PR00._PPC))
+                        If (CondRefOf (\_PR.CPU0._PPC))
                         {
                             \_PR.CPPC = Zero
                             PNOT ()
@@ -20173,15 +19948,15 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     ADBG ("Enter Resiliency")
                     If (PSCP)
                     {
-                        If ((CondRefOf (\_PR.PR00._PSS) && CondRefOf (\_PR.PR00._PPC)))
+                        If ((CondRefOf (\_PR.CPU0._PSS) && CondRefOf (\_PR.CPU0._PPC)))
                         {
-                            If ((\PC00 & 0x0400))
+                            If ((\PDC0 & 0x0400))
                             {
-                                \_PR.CPPC = (SizeOf (\_PR.PR00.TPSS) - One)
+                                \_PR.CPPC = (SizeOf (\_PR.CPU0.TPSS) - One)
                             }
                             Else
                             {
-                                \_PR.CPPC = (SizeOf (\_PR.PR00.LPSS) - One)
+                                \_PR.CPPC = (SizeOf (\_PR.CPU0.LPSS) - One)
                             }
 
                             PNOT ()
@@ -22262,25 +22037,17 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
     Scope (\_PR)
     {
-        Processor (PR00, 0x01, 0x00001810, 0x06) {}
-        Processor (PR01, 0x02, 0x00001810, 0x06) {}
-        Processor (PR02, 0x03, 0x00001810, 0x06) {}
-        Processor (PR03, 0x04, 0x00001810, 0x06) {}
-        Processor (PR04, 0x05, 0x00001810, 0x06) {}
-        Processor (PR05, 0x06, 0x00001810, 0x06) {}
-        Processor (PR06, 0x07, 0x00001810, 0x06) {}
-        Processor (PR07, 0x08, 0x00001810, 0x06) {}
-        Processor (PR08, 0x09, 0x00001810, 0x06) {}
-        Processor (PR09, 0x0A, 0x00001810, 0x06) {}
-        Processor (PR10, 0x0B, 0x00001810, 0x06) {}
-        Processor (PR11, 0x0C, 0x00001810, 0x06) {}
-        Processor (PR12, 0x0D, 0x00001810, 0x06) {}
-        Processor (PR13, 0x0E, 0x00001810, 0x06) {}
-        Processor (PR14, 0x0F, 0x00001810, 0x06) {}
-        Processor (PR15, 0x10, 0x00001810, 0x06) {}
+        Processor (CPU0, 0x01, 0x00001810, 0x06) {}
+        Processor (CPU1, 0x02, 0x00001810, 0x06) {}
+        Processor (CPU2, 0x03, 0x00001810, 0x06) {}
+        Processor (CPU3, 0x04, 0x00001810, 0x06) {}
+        Processor (CPU4, 0x05, 0x00001810, 0x06) {}
+        Processor (CPU5, 0x06, 0x00001810, 0x06) {}
+        Processor (CPU6, 0x07, 0x00001810, 0x06) {}
+        Processor (CPU7, 0x08, 0x00001810, 0x06) {}
     }
 
-    Scope (\_PR.PR00)
+    Scope (\_PR.CPU0)
     {
         Name (CPC2, Package (0x15)
         {
@@ -22654,49 +22421,49 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
         {
             If ((\_PR.CFGD & 0x0200))
             {
-                If ((((PC00 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC00 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC0 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC0 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR00, Arg0)
+                    Notify (\_PR.CPU0, Arg0)
                 }
 
-                If ((((PC01 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC01 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC1 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC1 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR01, Arg0)
+                    Notify (\_PR.CPU1, Arg0)
                 }
 
-                If ((((PC02 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC02 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC2 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC2 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR02, Arg0)
+                    Notify (\_PR.CPU2, Arg0)
                 }
 
-                If ((((PC03 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC03 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC3 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC3 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR03, Arg0)
+                    Notify (\_PR.CPU3, Arg0)
                 }
 
-                If ((((PC04 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC04 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC4 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC4 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR04, Arg0)
+                    Notify (\_PR.CPU4, Arg0)
                 }
 
-                If ((((PC05 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC05 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC5 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC5 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR05, Arg0)
+                    Notify (\_PR.CPU5, Arg0)
                 }
 
-                If ((((PC06 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC06 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC6 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC6 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR06, Arg0)
+                    Notify (\_PR.CPU6, Arg0)
                 }
 
-                If ((((PC07 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PC07 & 0x10) && (Arg0 == 0x81))))
+                If ((((PDC7 & 0x08) && ((Arg0 == 0x80) || (Arg0 == 0x82))) || ((PDC7 & 0x10) && (Arg0 == 0x81))))
                 {
-                    Notify (\_PR.PR07, Arg0)
+                    Notify (\_PR.CPU7, Arg0)
                 }
             }
             ElseIf (((Arg0 == 0x80) || ((Arg0 == 0x81) || (Arg0 == 0x82))))
             {
-                Notify (\_PR.PR00, Arg0)
+                Notify (\_PR.CPU0, Arg0)
             }
         }
     }
@@ -24013,9 +23780,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
         VSFN,   1, 
         VDMC,   1, 
         VFHP,   1, 
-        VIFC,   1, 
-            ,   1, 
-        VMSC,   1, 
         Offset (0xEEC), 
         CICF,   4, 
         CICM,   4, 
@@ -24051,11 +23815,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
         Offset (0xF09), 
         DFHP,   15, 
         Offset (0xF0B), 
-        SCRB,   8, 
-        DIFC,   15, 
-        Offset (0xF0E), 
-        DMSC,   15, 
-        Offset (0xF10)
+        SCRB,   8
     }
 
     Field (MNVS, ByteAcc, NoLock, Preserve)
@@ -25480,7 +25240,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                 Package (0x02)
                 {
-                    0x18, 
+                    0x00, 
                     "PreBootForThunderboltDevice"
                 }, 
 
@@ -25496,7 +25256,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     "DeviceGuard"
                 }
             })
-            Name (VSEL, Package (0x19)
+            Name (VSEL, Package (0x18)
             {
                 Package (0x02)
                 {
@@ -25671,13 +25431,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     "UserAuthorization", 
                     "SecureConnect", 
                     "DisplayPortandUSB"
-                }, 
-
-                Package (0x03)
-                {
-                    "Disable", 
-                    "Enable", 
-                    "Pre-BootACL"
                 }
             })
             Name (VLST, Package (0x11)
@@ -26882,7 +26635,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 Release (\_SB.WMI1.MWMI)
             }
 
-            Name (ITEM, Package (0x08)
+            Name (ITEM, Package (0x07)
             {
                 Package (0x02)
                 {
@@ -26892,7 +26645,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                 Package (0x02)
                 {
-                    0x03, 
+                    0x00, 
                     "MTMSerialConcatenation"
                 }, 
 
@@ -26924,15 +26677,9 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 {
                     0x02, 
                     "SpecialCharForPassword"
-                }, 
-
-                Package (0x02)
-                {
-                    0x00, 
-                    "ConfirmTpmFwUpdate"
                 }
             })
-            Name (VSEL, Package (0x04)
+            Name (VSEL, Package (0x03)
             {
                 Package (0x02)
                 {
@@ -26950,16 +26697,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                 {
                     "Disable", 
                     "412"
-                }, 
-
-                Package (0x06)
-                {
-                    "Disable", 
-                    "Enable", 
-                    "Default", 
-                    "MTMSN", 
-                    "1SMTMSN", 
-                    "MTSN"
                 }
             })
             Method (WQA9, 1, NotSerialized)
@@ -28170,7 +27907,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (_Q7F, 0, NotSerialized)  // _Qxx: EC Query
         {
-            Fatal (0x01, 0x80010000, 0x00011153)
+            Fatal (0x01, 0x80010000, 0x0001103E)
         }
 
         Method (_Q46, 0, NotSerialized)  // _Qxx: EC Query
@@ -30169,17 +29906,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             \FLPF (0x01)
                             NVST (0x36)
                         }
-                        ElseIf ((\VIFC == 0x01))
-                        {
-                            \CICF = 0x0A
-                            If ((\_PR.CLVL > 0x01))
-                            {
-                                \_SB.PCI0.PL1S (\DIFC)
-                            }
-
-                            \FLPF (0x02)
-                            NVST (0x3C)
-                        }
                         ElseIf ((\VDMC == 0x01))
                         {
                             \CICF = 0x08
@@ -30224,8 +29950,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         Local5 |= (\VSFN << 0x07)
                         Local5 |= (\VDMC << 0x08)
                         Local5 |= (\VFHP << 0x09)
-                        Local5 |= (\VIFC << 0x0A)
-                        Local5 |= (\VMSC << 0x0C)
                         Local1 = (\CICF << 0x08)
                         If ((\CICF != 0x03))
                         {
@@ -30252,8 +29976,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         Local5 |= (\VSFN << 0x07)
                         Local5 |= (\VDMC << 0x08)
                         Local5 |= (\VFHP << 0x09)
-                        Local5 |= (\VIFC << 0x0A)
-                        Local5 |= (\VMSC << 0x0C)
                         Local1 = (\CICF << 0x08)
                         If ((\CICF != 0x03))
                         {
@@ -30300,8 +30022,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         \VSFN = 0x00
                         \VDMC = 0x00
                         \VFHP = 0x00
-                        \VIFC = 0x00
-                        \VMSC = 0x00
                         \CICF = 0x00
                         If ((\_PR.CLVL > 0x01))
                         {
@@ -30321,8 +30041,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         Local5 |= (\VSFN << 0x07)
                         Local5 |= (\VDMC << 0x08)
                         Local5 |= (\VFHP << 0x09)
-                        Local5 |= (\VIFC << 0x0A)
-                        Local5 |= (\VMSC << 0x0C)
                         Local1 = (\CICF << 0x08)
                         Local1 |= (\CICM << 0x0C)
                         Local1 |= (Local5 << 0x10)

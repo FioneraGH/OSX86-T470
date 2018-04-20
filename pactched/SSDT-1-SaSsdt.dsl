@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-1-SaSsdt.aml, Sat Mar 17 09:47:21 2018
+ * Disassembly of SSDT-1-SaSsdt.aml, Fri Apr 20 09:19:38 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
- *     Length           0x00003235 (12853)
+ *     Length           0x00003246 (12870)
  *     Revision         0x02
- *     Checksum         0x51
+ *     Checksum         0x81
  *     OEM ID           "LENOVO"
  *     OEM Table ID     "SaSsdt "
  *     OEM Revision     0x00003000 (12288)
@@ -58,7 +58,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
     External (PNHM, IntObj)    // (from opcode)
     External (S0ID, UnknownObj)    // (from opcode)
 
-    OperationRegion (SANV, SystemMemory, 0x5B55F418, 0x01F7)
+    OperationRegion (SANV, SystemMemory, 0x5B55F418, 0x01FE)
     Field (SANV, AnyAcc, Lock, Preserve)
     {
         ASLB,   32, 
@@ -171,8 +171,12 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
         P0WK,   32, 
         P1WK,   32, 
         P2WK,   32, 
+        CKM0,   32, 
+        CKM1,   32, 
+        CKM2,   32, 
         Offset (0x1F4), 
-        Offset (0x1F7)
+        Offset (0x1F7), 
+        Offset (0x1FE)
     }
 
     Scope (\_SB.PCI0.GFX0)

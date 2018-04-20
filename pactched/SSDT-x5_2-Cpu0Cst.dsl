@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-x5_2-Cpu0Cst.aml, Sat Mar 17 09:47:22 2018
+ * Disassembly of SSDT-x5_2-Cpu0Cst.aml, Fri Apr 20 09:19:39 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
  *     Length           0x000003FF (1023)
  *     Revision         0x02
- *     Checksum         0xA9
+ *     Checksum         0x11
  *     OEM ID           "PmRef"
  *     OEM Table ID     "Cpu0Cst"
  *     OEM Revision     0x00003001 (12289)
@@ -31,7 +31,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
     External (_PR_.CDMW, FieldUnitObj)
     External (_PR_.CDPW, FieldUnitObj)
     External (_PR_.CFGD, FieldUnitObj)
-    External (_PR_.CPU0, DeviceObj)    // (from opcode)
+    External (_PR_.PR00, DeviceObj)    // (from opcode)
     External (C3LT, UnknownObj)    // (from opcode)
     External (C3MW, UnknownObj)    // (from opcode)
     External (C6LT, UnknownObj)    // (from opcode)
@@ -45,10 +45,10 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
     External (CFGD, UnknownObj)    // (from opcode)
     External (FEMD, UnknownObj)    // (from opcode)
     External (FMBL, UnknownObj)    // (from opcode)
-    External (PDC0, UnknownObj)    // (from opcode)
+    External (PC00, UnknownObj)    // (from opcode)
     External (PFLV, UnknownObj)    // (from opcode)
 
-    Scope (\_PR.CPU0)
+    Scope (\_PR.PR00)
     {
         Name (C1TM, Package (0x04)
         {
@@ -186,7 +186,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
                 CDTM [0x02] = CDLT
                 CDTM [0x03] = CDPW
                 DerefOf (CDTM [Zero]) [0x07] = CDLV
-                If (((CFGD & 0x0800) && (PDC0 & 0x0200)))
+                If (((CFGD & 0x0800) && (PC00 & 0x0200)))
                 {
                     C1TM [Zero] = MWES
                     C3TM [Zero] = MWES
@@ -198,7 +198,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
                     DerefOf (C7TM [Zero]) [0x07] = C7MW
                     DerefOf (CDTM [Zero]) [0x07] = CDMW
                 }
-                ElseIf (((CFGD & 0x0800) && (PDC0 & 0x0100)))
+                ElseIf (((CFGD & 0x0800) && (PC00 & 0x0100)))
                 {
                     C1TM [Zero] = MWES
                 }

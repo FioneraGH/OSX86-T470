@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-x5_0-Cpu0Ist.aml, Sat Mar 17 09:47:22 2018
+ * Disassembly of SSDT-x5_0-Cpu0Ist.aml, Fri Apr 20 09:19:39 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
  *     Length           0x000006B4 (1716)
  *     Revision         0x02
- *     Checksum         0xF4
+ *     Checksum         0x48
  *     OEM ID           "PmRef"
  *     OEM Table ID     "Cpu0Ist"
  *     OEM Revision     0x00003000 (12288)
@@ -22,12 +22,12 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Ist", 0x00003000)
 {
     External (_PR_.CFGD, FieldUnitObj)    // (from opcode)
     External (_PR_.CPPC, FieldUnitObj)    // (from opcode)
-    External (_PR_.CPU0, DeviceObj)    // (from opcode)
+    External (_PR_.PR00, DeviceObj)    // (from opcode)
     External (_SB_.OSCP, IntObj)    // (from opcode)
-    External (PDC0, IntObj)    // (from opcode)
+    External (PC00, IntObj)    // (from opcode)
     External (TCNT, FieldUnitObj)    // (from opcode)
 
-    Scope (\_PR.CPU0)
+    Scope (\_PR.PR00)
     {
         Method (_PPC, 0, NotSerialized)  // _PPC: Performance Present Capabilities
         {
@@ -490,7 +490,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Ist", 0x00003000)
                 PSDF = Ones
             }
 
-            If ((PDC0 & 0x0800))
+            If ((PC00 & 0x0800))
             {
                 Return (HPSD)
             }

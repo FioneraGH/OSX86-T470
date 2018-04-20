@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-x5_3-ApCst.aml, Sat Mar 17 09:47:22 2018
+ * Disassembly of SSDT-x5_3-ApCst.aml, Fri Apr 20 09:19:39 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
- *     Length           0x0000018A (394)
+ *     Length           0x0000030A (778)
  *     Revision         0x02
- *     Checksum         0x33
+ *     Checksum         0x93
  *     OEM ID           "PmRef"
  *     OEM Table ID     "ApCst"
  *     OEM Revision     0x00003000 (12288)
@@ -20,68 +20,140 @@
  */
 DefinitionBlock ("", "SSDT", 2, "PmRef", "ApCst", 0x00003000)
 {
-    External (_PR_.CPU0._CST, UnknownObj)    // (from opcode)
-    External (_PR_.CPU1, DeviceObj)    // (from opcode)
-    External (_PR_.CPU2, DeviceObj)    // (from opcode)
-    External (_PR_.CPU3, DeviceObj)    // (from opcode)
-    External (_PR_.CPU4, DeviceObj)    // (from opcode)
-    External (_PR_.CPU5, DeviceObj)    // (from opcode)
-    External (_PR_.CPU6, DeviceObj)    // (from opcode)
-    External (_PR_.CPU7, DeviceObj)    // (from opcode)
+    External (_PR_.PR00._CST, UnknownObj)    // (from opcode)
+    External (_PR_.PR01, DeviceObj)    // (from opcode)
+    External (_PR_.PR02, DeviceObj)    // (from opcode)
+    External (_PR_.PR03, DeviceObj)    // (from opcode)
+    External (_PR_.PR04, DeviceObj)    // (from opcode)
+    External (_PR_.PR05, DeviceObj)    // (from opcode)
+    External (_PR_.PR06, DeviceObj)    // (from opcode)
+    External (_PR_.PR07, DeviceObj)    // (from opcode)
+    External (_PR_.PR08, DeviceObj)    // (from opcode)
+    External (_PR_.PR09, DeviceObj)    // (from opcode)
+    External (_PR_.PR10, DeviceObj)    // (from opcode)
+    External (_PR_.PR11, DeviceObj)    // (from opcode)
+    External (_PR_.PR12, DeviceObj)    // (from opcode)
+    External (_PR_.PR13, DeviceObj)    // (from opcode)
+    External (_PR_.PR14, DeviceObj)    // (from opcode)
+    External (_PR_.PR15, DeviceObj)    // (from opcode)
 
-    Scope (\_PR.CPU1)
+    Scope (\_PR.PR01)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
         }
     }
 
-    Scope (\_PR.CPU2)
+    Scope (\_PR.PR02)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
         }
     }
 
-    Scope (\_PR.CPU3)
+    Scope (\_PR.PR03)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
         }
     }
 
-    Scope (\_PR.CPU4)
+    Scope (\_PR.PR04)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
         }
     }
 
-    Scope (\_PR.CPU5)
+    Scope (\_PR.PR05)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
         }
     }
 
-    Scope (\_PR.CPU6)
+    Scope (\_PR.PR06)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
         }
     }
 
-    Scope (\_PR.CPU7)
+    Scope (\_PR.PR07)
     {
         Method (_CST, 0, NotSerialized)  // _CST: C-States
         {
-            Return (\_PR.CPU0._CST ())
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR08)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR09)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR10)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR11)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR12)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR13)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR14)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
+        }
+    }
+
+    Scope (\_PR.PR15)
+    {
+        Method (_CST, 0, NotSerialized)  // _CST: C-States
+        {
+            Return (\_PR.PR00._CST ())
         }
     }
 }

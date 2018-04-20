@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-x5_5-ApHwp.aml, Sat Mar 17 09:47:22 2018
+ * Disassembly of SSDT-x5_5-ApHwp.aml, Fri Apr 20 09:19:39 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
- *     Length           0x00000197 (407)
+ *     Length           0x00000317 (791)
  *     Revision         0x02
- *     Checksum         0xEB
+ *     Checksum         0x80
  *     OEM ID           "PmRef"
  *     OEM Table ID     "ApHwp"
  *     OEM Revision     0x00003000 (12288)
@@ -20,69 +20,141 @@
  */
 DefinitionBlock ("", "SSDT", 2, "PmRef", "ApHwp", 0x00003000)
 {
-    External (_PR_.CPU0, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU0._CPC, MethodObj)    // 0 Arguments (from opcode)
-    External (_PR_.CPU1, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU2, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU3, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU4, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU5, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU6, ProcessorObj)    // (from opcode)
-    External (_PR_.CPU7, ProcessorObj)    // (from opcode)
+    External (_PR_.PR00, ProcessorObj)    // (from opcode)
+    External (_PR_.PR00._CPC, MethodObj)    // 0 Arguments (from opcode)
+    External (_PR_.PR01, ProcessorObj)    // (from opcode)
+    External (_PR_.PR02, ProcessorObj)    // (from opcode)
+    External (_PR_.PR03, ProcessorObj)    // (from opcode)
+    External (_PR_.PR04, ProcessorObj)    // (from opcode)
+    External (_PR_.PR05, ProcessorObj)    // (from opcode)
+    External (_PR_.PR06, ProcessorObj)    // (from opcode)
+    External (_PR_.PR07, ProcessorObj)    // (from opcode)
+    External (_PR_.PR08, ProcessorObj)    // (from opcode)
+    External (_PR_.PR09, ProcessorObj)    // (from opcode)
+    External (_PR_.PR10, ProcessorObj)    // (from opcode)
+    External (_PR_.PR11, ProcessorObj)    // (from opcode)
+    External (_PR_.PR12, ProcessorObj)    // (from opcode)
+    External (_PR_.PR13, ProcessorObj)    // (from opcode)
+    External (_PR_.PR14, ProcessorObj)    // (from opcode)
+    External (_PR_.PR15, ProcessorObj)    // (from opcode)
 
-    Scope (\_PR.CPU1)
+    Scope (\_PR.PR01)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
         }
     }
 
-    Scope (\_PR.CPU2)
+    Scope (\_PR.PR02)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
         }
     }
 
-    Scope (\_PR.CPU3)
+    Scope (\_PR.PR03)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
         }
     }
 
-    Scope (\_PR.CPU4)
+    Scope (\_PR.PR04)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
         }
     }
 
-    Scope (\_PR.CPU5)
+    Scope (\_PR.PR05)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
         }
     }
 
-    Scope (\_PR.CPU6)
+    Scope (\_PR.PR06)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
         }
     }
 
-    Scope (\_PR.CPU7)
+    Scope (\_PR.PR07)
     {
         Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
         {
-            Return (\_PR.CPU0._CPC ())
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR08)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR09)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR10)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR11)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR12)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR13)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR14)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
+        }
+    }
+
+    Scope (\_PR.PR15)
+    {
+        Method (_CPC, 0, NotSerialized)  // _CPC: Continuous Performance Control
+        {
+            Return (\_PR.PR00._CPC ())
         }
     }
 }

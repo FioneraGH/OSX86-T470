@@ -5,13 +5,13 @@
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-11-SgPch.aml, Sat Mar 17 09:47:21 2018
+ * Disassembly of SSDT-11-SgPch.aml, Fri Apr 20 09:19:38 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
  *     Length           0x00001627 (5671)
  *     Revision         0x02
- *     Checksum         0xE7
+ *     Checksum         0x13
  *     OEM ID           "LENOVO"
  *     OEM Table ID     "SgPch"
  *     OEM Revision     0x00001000 (4096)
@@ -20,7 +20,7 @@
  */
 DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
 {
-    External (_PR_.CPU0._PSS, MethodObj)    // 0 Arguments (from opcode)
+    External (_PR_.PR00._PSS, MethodObj)    // 0 Arguments (from opcode)
     External (_SB_.PCI0, DeviceObj)    // (from opcode)
     External (_SB_.PCI0.LPCB.DGON, UnknownObj)    // (from opcode)
     External (_SB_.PCI0.LPCB.DGRT, UnknownObj)    // (from opcode)
@@ -891,7 +891,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                 }
                 ElseIf ((_T_0 == 0x21))
                 {
-                    Return (\_PR.CPU0._PSS ())
+                    Return (\_PR.PR00._PSS ())
                 }
                 ElseIf ((_T_0 == 0x22))
                 {
