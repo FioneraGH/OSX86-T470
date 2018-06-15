@@ -20345,7 +20345,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     OSYS = 0x07D9
                 }
 
-                If(LOr(_OSI("Darwin"), _OSI("Windows 2012")))
+                If(\_OSI("Windows 2012"))
                 {
                     \WIN8 = 0x01
                     OSYS = 0x07DC
@@ -20357,7 +20357,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     OSYS = 0x07DD
                 }
 
-                If (\_OSI ("Windows 2015"))
+                If (LOr(\_OSI("Darwin"), \_OSI("Windows 2012")))
                 {
                     \WIN8 = 0x01
                     OSYS = 0x07DF
