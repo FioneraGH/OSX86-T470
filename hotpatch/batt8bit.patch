@@ -18,9 +18,9 @@ Method (B1B4, 4, NotSerialized)\n
 end;
 
 # utility methods to read/write buffers from/to EC
-into method label RE1B parent_label H_EC remove_entry;
-into method label RECB parent_label H_EC remove_entry;
-into device label H_EC insert
+into method label RE1B parent_label EC remove_entry;
+into method label RECB parent_label EC remove_entry;
+into device label EC insert
 begin
 Method (RE1B, 1, NotSerialized)\n
 {\n
