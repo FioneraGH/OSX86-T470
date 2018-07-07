@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-0-Tpm2Tabl.aml, Sat Mar 17 09:47:21 2018
+ * Disassembly of SSDT-0-Tpm2Tabl.aml, Sat Jul  7 23:02:21 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -87,18 +87,16 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
 
             Method (HINF, 3, Serialized)
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
-                While (One)
+                Switch (ToInteger (Arg1))
                 {
-                    _T_0 = ToInteger (Arg1)
-                    If ((_T_0 == Zero))
+                    Case (Zero)
                     {
                         Return (Buffer (One)
                         {
                              0x03                                           
                         })
                     }
-                    ElseIf ((_T_0 == One))
+                    Case (One)
                     {
                         Name (TPMV, Package (0x02)
                         {
@@ -119,12 +117,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
 
                         Return (TPMV)
                     }
-                    Else
+                    Default
                     {
                         BreakPoint
                     }
 
-                    Break
                 }
 
                 Return (Buffer (One)
@@ -146,38 +143,36 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
             })
             Method (TPPI, 3, Serialized)
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
-                While (One)
+                Switch (ToInteger (Arg1))
                 {
-                    _T_0 = ToInteger (Arg1)
-                    If ((_T_0 == Zero))
+                    Case (Zero)
                     {
                         Return (Buffer (0x02)
                         {
                              0xFF, 0x01                                     
                         })
                     }
-                    ElseIf ((_T_0 == One))
+                    Case (One)
                     {
                         Return ("1.3")
                     }
-                    ElseIf ((_T_0 == 0x02))
+                    Case (0x02)
                     {
                         PPRQ = DerefOf (Arg2 [Zero])
                         PPIP = 0x02
                         IOB2 = PPIN
                         Return (FRET)
                     }
-                    ElseIf ((_T_0 == 0x03))
+                    Case (0x03)
                     {
                         TPM2 [One] = PPRQ
                         Return (TPM2)
                     }
-                    ElseIf ((_T_0 == 0x04))
+                    Case (0x04)
                     {
                         Return (0x02)
                     }
-                    ElseIf ((_T_0 == 0x05))
+                    Case (0x05)
                     {
                         PPIP = 0x05
                         IOB2 = PPIN
@@ -185,11 +180,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
                         TPM3 [0x02] = PPRP
                         Return (TPM3)
                     }
-                    ElseIf ((_T_0 == 0x06))
+                    Case (0x06)
                     {
                         Return (0x03)
                     }
-                    ElseIf ((_T_0 == 0x07))
+                    Case (0x07)
                     {
                         PPIP = 0x07
                         PPRQ = DerefOf (Arg2 [Zero])
@@ -202,7 +197,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
                         IOB2 = PPIN
                         Return (FRET)
                     }
-                    ElseIf ((_T_0 == 0x08))
+                    Case (0x08)
                     {
                         PPIP = 0x08
                         PPRQ = DerefOf (Arg2 [Zero])
@@ -210,12 +205,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
                         PPRQ = Zero
                         Return (FRET)
                     }
-                    Else
+                    Default
                     {
                         BreakPoint
                     }
 
-                    Break
                 }
 
                 Return (One)
@@ -223,30 +217,27 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "Tpm2Tabl", 0x00001000)
 
             Method (TMCI, 3, Serialized)
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
-                While (One)
+                Switch (ToInteger (Arg1))
                 {
-                    _T_0 = ToInteger (Arg1)
-                    If ((_T_0 == Zero))
+                    Case (Zero)
                     {
                         Return (Buffer (One)
                         {
                              0x03                                           
                         })
                     }
-                    ElseIf ((_T_0 == One))
+                    Case (One)
                     {
                         MORD = DerefOf (Arg2 [Zero])
                         MCIP = One
                         IOB2 = MCIN
                         Return (MRET)
                     }
-                    Else
+                    Default
                     {
                         BreakPoint
                     }
 
-                    Break
                 }
 
                 Return (One)

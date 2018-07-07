@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-11-SgPch.aml, Fri Apr 20 09:19:38 2018
+ * Disassembly of SSDT-11-SgPch.aml, Sat Jul  7 23:02:21 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -445,24 +445,22 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
 
         Method (NGC6, 4, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             Debug = "------- GC6 DSM --------"
             If ((Arg1 < 0x0100))
             {
                 Return (0x80000001)
             }
 
-            While (One)
+            Switch (ToInteger (Arg2))
             {
-                _T_0 = ToInteger (Arg2)
-                If ((_T_0 == Zero))
+                Case (Zero)
                 {
                     Return (Buffer (0x04)
                     {
                          0x1B, 0x00, 0x00, 0x00                         
                     })
                 }
-                ElseIf ((_T_0 == One))
+                Case (One)
                 {
                     Name (JTB1, Buffer (0x04)
                     {
@@ -492,12 +490,12 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                     JTRV = 0x0103
                     Return (JTB1)
                 }
-                ElseIf ((_T_0 == 0x02))
+                Case (0x02)
                 {
                     Debug = "GPS fun 19"
                     Return (Arg3)
                 }
-                ElseIf ((_T_0 == 0x03))
+                Case (0x03)
                 {
                     CreateField (Arg3, Zero, 0x03, GUPC)
                     CreateField (Arg3, 0x04, One, PLPC)
@@ -565,15 +563,14 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                             GPGS = Zero
                         }
                     }
-                    ElseIf ((ToInteger (GUPC) == 0x06)) {}
+                    ElseIf ((ToInteger (GUPC) == 0x06)){}
                     Return (JTB3)
                 }
-                ElseIf ((_T_0 == 0x04))
+                Case (0x04)
                 {
                     Return (0x80000002)
                 }
 
-                Break
             }
 
             Return (0x80000002)
@@ -735,24 +732,22 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
         Name (OPTF, Zero)
         Method (NVOP, 4, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             Debug = "------- NV OPTIMUS DSM --------"
             If ((Arg1 != 0x0100))
             {
                 Return (0x80000001)
             }
 
-            While (One)
+            Switch (ToInteger (Arg2))
             {
-                _T_0 = ToInteger (Arg2)
-                If ((_T_0 == Zero))
+                Case (Zero)
                 {
                     Return (Buffer (0x04)
                     {
                          0x01, 0x00, 0x03, 0x04                         
                     })
                 }
-                ElseIf ((_T_0 == 0x1A))
+                Case (0x1A)
                 {
                     CreateField (Arg3, 0x18, 0x02, OPCE)
                     CreateField (Arg3, Zero, One, FLCH)
@@ -781,7 +776,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
 
                     Return (Local0)
                 }
-                ElseIf ((_T_0 == 0x1B))
+                Case (0x1B)
                 {
                     Local0 = Arg3
                     CreateField (Local0, Zero, One, OPFL)
@@ -798,12 +793,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                     Local0 = OPTF
                     Return (Local0)
                 }
-                ElseIf ((_T_0 == 0x10))
+                Case (0x10)
                 {
                     Return (\_SB.PCI0.RP01.PEGP.GOBT (Arg3))
                 }
 
-                Break
             }
 
             Return (0x80000002)
@@ -846,13 +840,10 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
         Name (CPPC, Zero)
         Method (NVPS, 4, Serialized)
         {
-            Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             Debug = "------- NV GPS DSM --------"
-            While (One)
+            Switch (ToInteger (Arg2))
             {
-                _T_0 = ToInteger (Arg2)
-                If ((_T_0 == Zero))
+                Case (Zero)
                 {
                     Local0 = Buffer (0x08)
                         {
@@ -875,7 +866,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
 
                     Return (Local0)
                 }
-                ElseIf ((_T_0 == 0x20))
+                Case (0x20)
                 {
                     Local0 = Buffer (0x04)
                         {
@@ -889,11 +880,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                     CPC2 = One
                     Return (Local0)
                 }
-                ElseIf ((_T_0 == 0x21))
+                Case (0x21)
                 {
                     Return (\_PR.PR00._PSS ())
                 }
-                ElseIf ((_T_0 == 0x22))
+                Case (0x22)
                 {
                     CreateField (Arg3, Zero, 0x08, PPCV)
                     CPPC = PPCV
@@ -903,7 +894,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                          0x00, 0x00, 0x00, 0x00                         
                     })
                 }
-                ElseIf ((_T_0 == 0x23))
+                Case (0x23)
                 {
                     Local0 = Buffer (0x04)
                         {
@@ -912,7 +903,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                     Local0 [Zero] = CPPC
                     Return (Local0)
                 }
-                ElseIf ((_T_0 == 0x2A))
+                Case (0x2A)
                 {
                     Local0 = Buffer (0x24)
                         {
@@ -924,33 +915,30 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SgPch", 0x00001000)
                         }
                     Local0 [Zero] = DerefOf (Arg3 [Zero])
                     CreateField (Arg3, Zero, 0x04, QTYP)
-                    While (One)
+                    Switch (ToInteger (QTYP))
                     {
-                        _T_1 = ToInteger (QTYP)
-                        If ((_T_1 == Zero))
+                        Case (Zero)
                         {
                             Local1 = \_SB.PCI0.LPCB.EC.TMP0
                             Local0 [0x0C] = (Local1 & 0xFF)
                             Return (Local0)
                         }
-                        ElseIf ((_T_1 == One))
+                        Case (One)
                         {
                             Local0 [0x0D] = 0x08
                             Local0 [One] = 0x03
                             Return (Local0)
                         }
-                        ElseIf ((_T_1 == 0x02))
+                        Case (0x02)
                         {
                             Local0 [One] = 0x03
                             Local0 [0x08] = 0x4B
                             Return (Local0)
                         }
 
-                        Break
                     }
                 }
 
-                Break
             }
 
             Return (Buffer (0x04)

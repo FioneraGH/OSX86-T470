@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-7-UsbCTabl.aml, Sat Mar 17 09:47:21 2018
+ * Disassembly of SSDT-7-UsbCTabl.aml, Sat Jul  7 23:02:22 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -135,7 +135,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "UsbCTabl", 0x00001000)
             Method (ECWR, 0, Serialized)
             {
                 Acquire (UBSY, 0xFFFF)
-                Local0 = Buffer (0x25) {}
+                Local0 = Buffer (0x25){}
                 Local0 [Zero] = 0x0A
                 Local0 [One] = Zero
                 Local0 [0x02] = 0x02
@@ -178,7 +178,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "UsbCTabl", 0x00001000)
             Method (ECRD, 0, Serialized)
             {
                 Acquire (UBSY, 0xFFFF)
-                Local0 = Buffer (0x25) {}
+                Local0 = Buffer (0x25){}
                 Local0 [Zero] = 0x0B
                 Local0 [One] = Zero
                 Local0 [0x02] = 0x02
@@ -223,33 +223,30 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "UsbCTabl", 0x00001000)
 
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("6f8398c2-7ca4-11e4-ad36-631042b5008f")))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == Zero))
+                        Case (Zero)
                         {
                             Return (Buffer (One)
                             {
                                  0x0F                                           
                             })
                         }
-                        ElseIf ((_T_0 == One))
+                        Case (One)
                         {
                             ECWR ()
                         }
-                        ElseIf ((_T_0 == 0x02))
+                        Case (0x02)
                         {
                             ECRD ()
                         }
-                        ElseIf ((_T_0 == 0x03))
+                        Case (0x03)
                         {
                             Return (XDCE)
                         }
 
-                        Break
                     }
                 }
 

@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-6-CtdpB.aml, Fri Apr 20 09:19:38 2018
+ * Disassembly of SSDT-6-CtdpB.aml, Sat Jul  7 23:02:22 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -22,7 +22,6 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
 {
     External (_PR_.CPPC, IntObj)    // (from opcode)
     External (_PR_.PR00, DeviceObj)    // (from opcode)
-    External (_PR_.PR00._PSS, MethodObj)    // 0 Arguments
     External (_PR_.PR00.LPSS, PkgObj)    // (from opcode)
     External (_PR_.PR00.TPSS, PkgObj)    // (from opcode)
     External (_PR_.PR01, DeviceObj)    // (from opcode)
@@ -231,25 +230,22 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "CtdpB", 0x00001000)
 
         Method (CLC2, 1, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             Local0 = (PNHM & 0x0FFF0FF0)
-            While (One)
+            Switch (ToInteger (Local0))
             {
-                _T_0 = ToInteger (Local0)
-                If ((_T_0 == 0x000306C0))
+                Case (0x000306C0)
                 {
                     Return (((Arg0 * 0x05) / 0x04))
                 }
-                ElseIf ((_T_0 == 0x00040650))
+                Case (0x00040650)
                 {
                     Return (0xC8)
                 }
-                Else
+                Default
                 {
                     Return (((Arg0 * 0x05) / 0x04))
                 }
 
-                Break
             }
         }
     }

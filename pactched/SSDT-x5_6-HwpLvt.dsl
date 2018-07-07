@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-x5_6-HwpLvt.aml, Fri Apr 20 09:19:39 2018
+ * Disassembly of SSDT-x5_6-HwpLvt.aml, Sat Jul  7 23:02:22 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -42,11 +42,9 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
     {
         Method (HLVT, 0, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
-            While (One)
+            Switch (ToInteger (TCNT))
             {
-                _T_0 = ToInteger (TCNT)
-                If ((_T_0 == 0x10))
+                Case (0x10)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -65,7 +63,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR14, 0x83)
                     Notify (\_PR.PR15, 0x83)
                 }
-                ElseIf ((_T_0 == 0x0E))
+                Case (0x0E)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -82,7 +80,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR12, 0x83)
                     Notify (\_PR.PR13, 0x83)
                 }
-                ElseIf ((_T_0 == 0x0C))
+                Case (0x0C)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -97,7 +95,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR10, 0x83)
                     Notify (\_PR.PR11, 0x83)
                 }
-                ElseIf ((_T_0 == 0x0A))
+                Case (0x0A)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -110,7 +108,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR08, 0x83)
                     Notify (\_PR.PR09, 0x83)
                 }
-                ElseIf ((_T_0 == 0x08))
+                Case (0x08)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -121,7 +119,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR06, 0x83)
                     Notify (\_PR.PR07, 0x83)
                 }
-                ElseIf ((_T_0 == 0x07))
+                Case (0x07)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -131,7 +129,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR05, 0x83)
                     Notify (\_PR.PR06, 0x83)
                 }
-                ElseIf ((_T_0 == 0x06))
+                Case (0x06)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -140,7 +138,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR04, 0x83)
                     Notify (\_PR.PR05, 0x83)
                 }
-                ElseIf ((_T_0 == 0x05))
+                Case (0x05)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
@@ -148,30 +146,29 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "HwpLvt", 0x00003000)
                     Notify (\_PR.PR03, 0x83)
                     Notify (\_PR.PR04, 0x83)
                 }
-                ElseIf ((_T_0 == 0x04))
+                Case (0x04)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
                     Notify (\_PR.PR02, 0x83)
                     Notify (\_PR.PR03, 0x83)
                 }
-                ElseIf ((_T_0 == 0x03))
+                Case (0x03)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
                     Notify (\_PR.PR02, 0x83)
                 }
-                ElseIf ((_T_0 == 0x02))
+                Case (0x02)
                 {
                     Notify (\_PR.PR00, 0x83)
                     Notify (\_PR.PR01, 0x83)
                 }
-                Else
+                Default
                 {
                     Notify (\_PR.PR00, 0x83)
                 }
 
-                Break
             }
         }
     }

@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-x5_2-Cpu0Cst.aml, Fri Apr 20 09:19:39 2018
+ * Disassembly of SSDT-x5_2-Cpu0Cst.aml, Sat Jul  7 23:02:22 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -30,7 +30,7 @@ DefinitionBlock ("", "SSDT", 2, "PmRef", "Cpu0Cst", 0x00003001)
     External (_PR_.CDLV, FieldUnitObj)
     External (_PR_.CDMW, FieldUnitObj)
     External (_PR_.CDPW, FieldUnitObj)
-    External (_PR_.CFGD, FieldUnitObj)
+    External (_PR_.CFGD, UnknownObj)    // Warning: Unknown object
     External (_PR_.PR00, DeviceObj)    // (from opcode)
     External (C3LT, UnknownObj)    // (from opcode)
     External (C3MW, UnknownObj)    // (from opcode)

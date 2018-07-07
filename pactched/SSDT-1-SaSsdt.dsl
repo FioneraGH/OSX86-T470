@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-1-SaSsdt.aml, Fri Apr 20 09:19:38 2018
+ * Disassembly of SSDT-1-SaSsdt.aml, Sat Jul  7 23:02:21 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
@@ -20,26 +20,6 @@
  */
 DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
 {
-    /*
-     * iASL Warning: There were 7 external control methods found during
-     * disassembly, but only 5 were resolved (2 unresolved). Additional
-     * ACPI tables may be required to properly disassemble the code. This
-     * resulting disassembler output file may not compile because the
-     * disassembler did not know how many arguments to assign to the
-     * unresolved methods. Note: SSDTs can be dynamically loaded at
-     * runtime and may or may not be available via the host OS.
-     *
-     * In addition, the -fe option can be used to specify a file containing
-     * control method external declarations with the associated method
-     * argument counts. Each line of the file must be of the form:
-     *     External (<method pathname>, MethodObj, <argument count>)
-     * Invocation:
-     *     iasl -fe refs.txt -d dsdt.aml
-     *
-     * The following methods were unresolved and many not compile properly
-     * because the disassembler had to guess at the number of arguments
-     * required for each:
-     */
     External (_SB_.LID_._LID, MethodObj)    // 0 Arguments (from opcode)
     External (_SB_.PCI0, DeviceObj)    // (from opcode)
     External (_SB_.PCI0.GFX0, DeviceObj)    // (from opcode)
@@ -52,8 +32,6 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
     External (DSEN, UnknownObj)    // (from opcode)
     External (ECON, IntObj)    // (from opcode)
     External (GUAM, MethodObj)    // 1 Arguments (from opcode)
-    External (HDOS, MethodObj)    // Warning: Unknown method, guessing 0 arguments
-    External (HNOT, MethodObj)    // Warning: Unknown method, guessing 1 arguments
     External (OSYS, IntObj)    // (from opcode)
     External (PNHM, IntObj)    // (from opcode)
     External (S0ID, UnknownObj)    // (from opcode)
@@ -2634,13 +2612,11 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
 
         Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             If ((Arg0 == ToUUID ("3e5b41c6-eb1d-4260-9d15-c71fbadae414")))
             {
-                While (One)
+                Switch (ToInteger (Arg2))
                 {
-                    _T_0 = ToInteger (Arg2)
-                    If ((_T_0 == Zero))
+                    Case (Zero)
                     {
                         If ((Arg1 == One))
                         {
@@ -2648,7 +2624,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (0x0001E7FF)
                         }
                     }
-                    ElseIf ((_T_0 == One))
+                    Case (One)
                     {
                         If ((Arg1 == One))
                         {
@@ -2680,7 +2656,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x02))
+                    Case (0x02)
                     {
                         If ((Arg1 == One))
                         {
@@ -2688,7 +2664,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x03))
+                    Case (0x03)
                     {
                         If ((Arg1 == One))
                         {
@@ -2696,7 +2672,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x04))
+                    Case (0x04)
                     {
                         If ((Arg1 == One))
                         {
@@ -2704,7 +2680,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x05))
+                    Case (0x05)
                     {
                         If ((Arg1 == One))
                         {
@@ -2712,7 +2688,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x06))
+                    Case (0x06)
                     {
                         If ((Arg1 == One))
                         {
@@ -2720,7 +2696,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x07))
+                    Case (0x07)
                     {
                         If ((Arg1 == One))
                         {
@@ -2729,7 +2705,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x08))
+                    Case (0x08)
                     {
                         If ((Arg1 == One))
                         {
@@ -2745,7 +2721,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x09))
+                    Case (0x09)
                     {
                         If ((Arg1 == One))
                         {
@@ -2753,7 +2729,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (One)
                         }
                     }
-                    ElseIf ((_T_0 == 0x0A))
+                    Case (0x0A)
                     {
                         If ((Arg1 == One))
                         {
@@ -2763,7 +2739,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (Local0)
                         }
                     }
-                    ElseIf ((_T_0 == 0x0D))
+                    Case (0x0D)
                     {
                         If ((Arg1 == One))
                         {
@@ -2775,7 +2751,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (Local0)
                         }
                     }
-                    ElseIf ((_T_0 == 0x0E))
+                    Case (0x0E)
                     {
                         If ((Arg1 == One))
                         {
@@ -2789,7 +2765,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (Local0)
                         }
                     }
-                    ElseIf ((_T_0 == 0x0F))
+                    Case (0x0F)
                     {
                         If ((Arg1 == One))
                         {
@@ -2803,7 +2779,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                             Return (Local0)
                         }
                     }
-                    ElseIf ((_T_0 == 0x10))
+                    Case (0x10)
                     {
                         If ((Arg1 == One))
                         {
@@ -2819,7 +2795,6 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "SaSsdt ", 0x00003000)
                         }
                     }
 
-                    Break
                 }
             }
 
