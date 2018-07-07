@@ -1,11 +1,11 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of DSDT.aml, Fri Apr 20 09:19:38 2018
+ * Disassembly of DSDT.aml, Sat Jul  7 23:02:21 2018
  *
  * Original Table Header:
  *     Signature        "DSDT"
@@ -41,7 +41,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     External (_PR_.POWS, UnknownObj)    // (from opcode)
     External (_PR_.PR00, DeviceObj)    // (from opcode)
     External (_PR_.PR00._PPC, MethodObj)    // 0 Arguments
-    External (_PR_.PR00._PSS, MethodObj)    // 0 Arguments
     External (_PR_.PR00.LPSS, PkgObj)    // (from opcode)
     External (_PR_.PR00.TPSS, PkgObj)    // (from opcode)
     External (_PR_.TRPD, UnknownObj)    // (from opcode)
@@ -67,6 +66,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     External (_SB_.PCI0.HDAS.PPMS, MethodObj)    // 1 Arguments (from opcode)
     External (_SB_.PCI0.HDAS.PS0X, MethodObj)    // 0 Arguments (from opcode)
     External (_SB_.PCI0.HDAS.PS3X, MethodObj)    // 0 Arguments (from opcode)
+    External (_SB_.PCI0.LPCB.EC__.RTKB, UnknownObj)    // (from opcode)
     External (_SB_.PCI0.LPCB.H_EC.XDAT, MethodObj)    // 0 Arguments (from opcode)
     External (_SB_.PCI0.PAUD.PUAM, MethodObj)    // 0 Arguments (from opcode)
     External (_SB_.PCI0.PEG0, DeviceObj)    // (from opcode)
@@ -5370,7 +5370,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             {
                 \_SB.PCI0.LPCB.EC.PUBS
             })
-            
+
             Method (_DSW, 3, NotSerialized)  // _DSW: Device Sleep Wake
             {
                 PMEE = Arg0
@@ -5829,7 +5829,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If (PCIC (Arg0))
                 {
                     Return (PCID (Arg0, Arg1, Arg2, Arg3))
@@ -5915,26 +5914,25 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             Return (0x00)
                         }
 
-                        While (One)
+                        Switch (ToInteger (Arg2))
                         {
-                            _T_0 = ToInteger (Arg2)
-                            If ((_T_0 == 0x00))
+                            Case (0x00)
                             {
                                 Return (Buffer (0x01)
                                 {
                                      0xF3                                           
                                 })
                             }
-                            ElseIf ((_T_0 == 0x01))
+                            Case (0x01)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x04))
+                            Case (0x04)
                             {
                                 Local1 = DerefOf (Arg3 [0x00])
                                 SPPS (Local1, 0x00)
                             }
-                            ElseIf ((_T_0 == 0x05))
+                            Case (0x05)
                             {
                                 If (CondRefOf (\_SB.PCI0.LPCB.H_EC.XDAT))
                                 {
@@ -5950,7 +5948,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                                 Return (0x00)
                             }
-                            ElseIf ((_T_0 == 0x06))
+                            Case (0x06)
                             {
                                 OperationRegion (XDBD, SystemMemory, XDBA (), 0x00110000)
                                 Field (XDBD, DWordAcc, NoLock, Preserve)
@@ -5986,7 +5984,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                                 Return (0x00)
                             }
-                            ElseIf ((_T_0 == 0x07))
+                            Case (0x07)
                             {
                                 OperationRegion (XD22, SystemMemory, XDBA (), 0x00110000)
                                 Field (XD22, WordAcc, NoLock, Preserve)
@@ -6000,7 +5998,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 Return (Local0)
                             }
 
-                            Break
                         }
                     }
                 }
@@ -6151,7 +6148,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 ADBG ("HDAS _DSM")
                 If (PCIC (Arg0))
                 {
@@ -6160,27 +6156,26 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                 If ((Arg0 == ToUUID ("a69f886e-6ceb-4594-a41f-7b5dce24c553")))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Return (Buffer (One)
                             {
                                  0x0F                                           
                             })
                         }
-                        ElseIf ((_T_0 == 0x01))
+                        Case (0x01)
                         {
                             ADBG ("_DSM Fun 1 NHLT")
                             Return (NBUF)
                         }
-                        ElseIf ((_T_0 == 0x02))
+                        Case (0x02)
                         {
                             ADBG ("_DSM Fun 2 FMSK")
                             Return (ADFM)
                         }
-                        ElseIf ((_T_0 == 0x03))
+                        Case (0x03)
                         {
                             ADBG ("_DSM Fun 3 PPMS")
                             If (CondRefOf (\_SB.PCI0.HDAS.PPMS))
@@ -6190,7 +6185,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (0x00)
                         }
-                        Else
+                        Default
                         {
                             ADBG ("_DSM Fun NOK")
                             Return (Buffer (One)
@@ -6199,7 +6194,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             })
                         }
 
-                        Break
                     }
                 }
 
@@ -6301,13 +6295,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -6343,7 +6335,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -6365,14 +6357,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -6404,7 +6396,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -6414,7 +6406,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -6432,7 +6424,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -6557,13 +6548,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -6599,7 +6588,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -6621,14 +6610,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -6660,7 +6649,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -6670,7 +6659,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -6688,7 +6677,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -6813,13 +6801,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -6855,7 +6841,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -6877,14 +6863,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -6916,7 +6902,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -6926,7 +6912,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -6944,7 +6930,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -7069,13 +7054,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -7111,7 +7094,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7133,14 +7116,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7172,7 +7155,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7182,7 +7165,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7200,7 +7183,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -7325,13 +7307,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -7367,7 +7347,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7389,14 +7369,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7428,7 +7408,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7438,7 +7418,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7456,7 +7436,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -7581,13 +7560,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -7623,7 +7600,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7645,14 +7622,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7684,7 +7661,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7694,7 +7671,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7712,7 +7689,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -7837,13 +7813,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -7879,7 +7853,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7901,14 +7875,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -7940,7 +7914,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7950,7 +7924,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -7968,7 +7942,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -8093,13 +8066,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -8135,7 +8106,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8157,14 +8128,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8196,7 +8167,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8206,7 +8177,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8224,7 +8195,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -8351,13 +8321,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -8393,7 +8361,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8415,14 +8383,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8454,7 +8422,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8464,7 +8432,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8482,7 +8450,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -8607,13 +8574,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -8649,7 +8614,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8671,14 +8636,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8710,7 +8675,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8720,7 +8685,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8738,7 +8703,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -8863,13 +8827,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -8905,7 +8867,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8927,14 +8889,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -8966,7 +8928,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8976,7 +8938,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -8994,7 +8956,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -9119,13 +9080,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -9161,7 +9120,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9183,14 +9142,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9222,7 +9181,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -9232,7 +9191,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -9250,7 +9209,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -9375,13 +9333,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -9417,7 +9373,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9439,14 +9395,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9478,7 +9434,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -9488,7 +9444,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -9506,7 +9462,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -9631,13 +9586,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -9673,7 +9626,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9695,14 +9648,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9734,7 +9687,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -9744,7 +9697,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -9762,7 +9715,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -9887,13 +9839,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -9929,7 +9879,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9951,14 +9901,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -9990,7 +9940,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10000,7 +9950,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10018,7 +9968,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -10143,13 +10092,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -10185,7 +10132,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10207,14 +10154,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10246,7 +10193,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10256,7 +10203,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10274,7 +10221,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -10399,13 +10345,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -10441,7 +10385,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10463,14 +10407,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10502,7 +10446,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10512,7 +10456,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10530,7 +10474,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -10655,13 +10598,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -10697,7 +10638,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10719,14 +10660,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10758,7 +10699,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10768,7 +10709,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -10786,7 +10727,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -10911,13 +10851,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -10953,7 +10891,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -10975,14 +10913,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11014,7 +10952,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11024,7 +10962,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11042,7 +10980,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -11167,13 +11104,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -11209,7 +11144,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11231,14 +11166,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11270,7 +11205,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11280,7 +11215,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11298,7 +11233,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -11423,13 +11357,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -11465,7 +11397,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11487,14 +11419,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11526,7 +11458,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11536,7 +11468,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11554,7 +11486,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -11679,13 +11610,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -11721,7 +11650,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11743,14 +11672,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11782,7 +11711,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11792,7 +11721,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -11810,7 +11739,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -11935,13 +11863,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -11977,7 +11903,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -11999,14 +11925,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -12038,7 +11964,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -12048,7 +11974,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -12066,7 +11992,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -12191,13 +12116,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             })
             Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 If ((Arg0 == ToUUID ("e5c937d0-3553-4d7a-9117-ea4d19c3434d") /* Device Labeling Interface */))
                 {
-                    While (One)
+                    Switch (ToInteger (Arg2))
                     {
-                        _T_0 = ToInteger (Arg2)
-                        If ((_T_0 == 0x00))
+                        Case (0x00)
                         {
                             Name (OPTS, Buffer (0x02)
                             {
@@ -12233,7 +12156,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                             Return (OPTS)
                         }
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x04)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -12255,14 +12178,14 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x05))
+                        Case (0x05)
                         {
                             If ((Arg1 == 0x01))
                             {
                                 Return (0x01)
                             }
                         }
-                        ElseIf ((_T_0 == 0x06))
+                        Case (0x06)
                         {
                             If ((Arg1 >= 0x02))
                             {
@@ -12294,7 +12217,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x08))
+                        Case (0x08)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -12304,7 +12227,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                 }
                             }
                         }
-                        ElseIf ((_T_0 == 0x09))
+                        Case (0x09)
                         {
                             If ((ECR1 == 0x01))
                             {
@@ -12322,7 +12245,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -12426,7 +12348,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
             Method (RDCA, 5, Serialized)
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 OperationRegion (RPAL, SystemMemory, (\_SB.PCI0.GPCB () + ((0x000B8000 + 0x0100) + Arg1)), 0x04)
                 Field (RPAL, DWordAcc, Lock, Preserve)
                 {
@@ -12455,37 +12376,35 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     CRGC = Arg0
                 }
 
-                While (One)
+                Switch (ToInteger (Arg4))
                 {
-                    _T_0 = ToInteger (Arg4)
-                    If ((_T_0 == 0x00))
+                    Case (0x00)
                     {
                         Return (RPCD)
                     }
-                    ElseIf ((_T_0 == 0x02))
+                    Case (0x02)
                     {
                         CAIR = Arg1
                         Return (CADR)
                     }
-                    ElseIf ((_T_0 == 0x01))
+                    Case (0x01)
                     {
                         Local0 = (Arg2 & RPCD)
                         Local0 |= Arg3
                         RPCD = Local0
                     }
-                    ElseIf ((_T_0 == 0x03))
+                    Case (0x03)
                     {
                         CAIR = Arg1
                         Local0 = (Arg2 & CADR)
                         Local0 |= Arg3
                         CADR = Local0
                     }
-                    Else
+                    Default
                     {
                         Return (0x00)
                     }
 
-                    Break
                 }
 
                 Return (0x00)
@@ -12493,12 +12412,10 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
             Method (ARPC, 4, Serialized)
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 ADBG (Concatenate ("NRPN: ", ToHexString (Arg0)))
-                While (One)
+                Switch (ToInteger (Arg0))
                 {
-                    _T_0 = ToInteger (Arg0)
-                    If ((_T_0 == 0x04))
+                    Case (0x04)
                     {
                         If (CondRefOf (\_SB.PCI0.RP05.PWRG))
                         {
@@ -12515,7 +12432,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             CopyObject (\_SB.PCI0.RP05.SCLK, Arg3)
                         }
                     }
-                    ElseIf ((_T_0 == 0x08))
+                    Case (0x08)
                     {
                         If (CondRefOf (\_SB.PCI0.RP09.PWRG))
                         {
@@ -12532,7 +12449,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             CopyObject (\_SB.PCI0.RP09.SCLK, Arg3)
                         }
                     }
-                    ElseIf ((_T_0 == 0x0C))
+                    Case (0x0C)
                     {
                         If (CondRefOf (\_SB.PCI0.RP13.PWRG))
                         {
@@ -12549,7 +12466,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             CopyObject (\_SB.PCI0.RP13.SCLK, Arg3)
                         }
                     }
-                    ElseIf ((_T_0 == 0x10))
+                    Case (0x10)
                     {
                         If (CondRefOf (\_SB.PCI0.RP17.PWRG))
                         {
@@ -12566,12 +12483,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             CopyObject (\_SB.PCI0.RP17.SCLK, Arg3)
                         }
                     }
-                    Else
+                    Default
                     {
                         ADBG (Concatenate ("ERR!NRPN: ", ToHexString (Arg0)))
                     }
 
-                    Break
                 }
             }
 
@@ -13580,29 +13496,26 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (VMMH, 2, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             If ((!CondRefOf (\_SB.VMON) || !CondRefOf (\_SB.VMOF)))
             {
                 Return (Zero)
             }
 
-            While (One)
+            Switch (ToInteger (Arg0))
             {
-                _T_0 = ToInteger (Arg0)
-                If ((_T_0 == 0x00))
+                Case (0x00)
                 {
                     HDAA = Arg1
                 }
-                ElseIf ((_T_0 == 0x01))
+                Case (0x01)
                 {
                     DISA = Arg1
                 }
-                Else
+                Default
                 {
                     Return (Zero)
                 }
 
-                Break
             }
 
             If ((!DISA && !HDAA))
@@ -15148,7 +15061,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
             Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
             {
-                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 Name (BBUF, ResourceTemplate ()
                 {
                     SpiSerialBusV2 (0x0000, PolarityLow, FourWireMode, 0x08,
@@ -15217,44 +15129,42 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     ITRG = 0x01
                 }
 
-                While (One)
+                Switch (ToInteger (SDS7))
                 {
-                    _T_0 = ToInteger (SDS7)
-                    If ((_T_0 == 0x01))
+                    Case (0x01)
                     {
                         SPEX = 0x00989680
                         PHAX = 0x00
                     }
-                    ElseIf ((_T_0 == 0x02))
+                    Case (0x02)
                     {
                         SPEX = 0x002DC6C0
                         PHAX = 0x00
                     }
-                    ElseIf ((_T_0 == 0x03))
+                    Case (0x03)
                     {
                         SPEX = 0x007A1200
                         PHAX = 0x01
                     }
-                    ElseIf ((_T_0 == 0x04))
+                    Case (0x04)
                     {
                         SPEX = 0x007A1200
                         PHAX = 0x00
                     }
-                    ElseIf ((_T_0 == 0x05))
+                    Case (0x05)
                     {
                         SPEX = 0x00F42400
                         PHAX = 0x00
                     }
-                    ElseIf ((_T_0 == 0x06))
+                    Case (0x06)
                     {
                         SPEX = 0x002DC6C0
                         PHAX = 0x00
                     }
-                    Else
+                    Default
                     {
                     }
 
-                    Break
                 }
 
                 If ((SDS7 == 0x01))
@@ -16055,8 +15965,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                 Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
                 {
-                    Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
-                    Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                     If (PCIC (Arg0))
                     {
                         Return (PCID (Arg0, Arg1, Arg2, Arg3))
@@ -16067,10 +15975,9 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     {
                         If ((Arg1 >= Zero))
                         {
-                            While (One)
+                            Switch (ToInteger (Arg2))
                             {
-                                _T_0 = ToInteger (Arg2)
-                                If ((_T_0 == 0x00))
+                                Case (0x00)
                                 {
                                     If ((EMH4 == 0x01))
                                     {
@@ -16085,40 +15992,39 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                          0x21, 0x02                                     
                                     })
                                 }
-                                ElseIf ((_T_0 == 0x05))
+                                Case (0x05)
                                 {
                                     Return (Buffer (0x01)
                                     {
                                          0x03                                           
                                     })
                                 }
-                                ElseIf ((_T_0 == 0x06))
+                                Case (0x06)
                                 {
                                     Return (Buffer (0x01)
                                     {
                                          0x05                                           
                                     })
                                 }
-                                ElseIf ((_T_0 == 0x09))
+                                Case (0x09)
                                 {
-                                    While (One)
+                                    Switch (EMDS)
                                     {
-                                        _T_1 = EMDS
-                                        If ((_T_1 == 0x00))
+                                        Case (0x00)
                                         {
                                             Return (Buffer (0x01)
                                             {
                                                  0x00                                           
                                             })
                                         }
-                                        ElseIf ((_T_1 == 0x01))
+                                        Case (0x01)
                                         {
                                             Return (Buffer (0x01)
                                             {
                                                  0x01                                           
                                             })
                                         }
-                                        ElseIf ((_T_1 == 0x04))
+                                        Case (0x04)
                                         {
                                             Return (Buffer (0x01)
                                             {
@@ -16126,11 +16032,9 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                             })
                                         }
 
-                                        Break
                                     }
                                 }
 
-                                Break
                             }
                         }
                     }
@@ -17631,7 +17535,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             {
                 Offset (0xA0), 
                 BRC0, 8,BRC1, 8, 
-                BFC0, 8,BFC1, 8,  
+                BFC0, 8,BFC1, 8, 
                 SBAE,   16, 
                 SBRS,   16, 
                 BAC0, 8,BAC1, 8, 
@@ -17643,7 +17547,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             Field (ECOR, ByteAcc, NoLock, Preserve)
             {
                 Offset (0xA0), 
-                BBM0, 8,BBM1, 8,
+                BBM0, 8,BBM1, 8, 
                 SBMD,   16, 
                 BCC0, 8,BCC1, 8
             }
@@ -18402,55 +18306,51 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             {
                 Method (SCRQ, 1, Serialized)
                 {
-                    Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
-                    Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                     Name (SCRS, 0x00)
                     Local0 = Arg0
                     Local1 = 0x00
                     ADBG (Concatenate ("SCRQ =", ToHexString (Local0)))
                     If (((Local0 & 0x80000000) == 0x00))
                     {
-                        While (One)
+                        Switch ((Local0 & 0xFFFF))
                         {
-                            _T_0 = (Local0 & 0xFFFF)
-                            If ((_T_0 == 0x00))
+                            Case (0x00)
                             {
                                 Local2 = 0x01000000
                             }
-                            ElseIf ((_T_0 == 0x0200))
+                            Case (0x0200)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x0210))
+                            Case (0x0210)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x0211))
+                            Case (0x0211)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x0212))
+                            Case (0x0212)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x0300))
+                            Case (0x0300)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x0301))
+                            Case (0x0301)
                             {
                                 Return (0x01)
                             }
-                            ElseIf ((_T_0 == 0x0302))
+                            Case (0x0302)
                             {
                                 Return (0x01)
                             }
-                            Else
+                            Default
                             {
                                 Return (0x00)
                             }
 
-                            Break
                         }
 
                         Return (Local2)
@@ -18458,34 +18358,33 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     Else
                     {
                         Local2 = (0x00 + 0x40000000)
-                        While (One)
+                        Switch ((Local0 & 0xFFFF))
                         {
-                            _T_1 = (Local0 & 0xFFFF)
-                            If ((_T_1 == 0x00))
+                            Case (0x00)
                             {
                                 Local2 = 0x01000000
                             }
-                            ElseIf ((_T_1 == 0x0200))
+                            Case (0x0200)
                             {
                                 Local2 = 0x01000000
                             }
-                            ElseIf ((_T_1 == 0x0210))
+                            Case (0x0210)
                             {
                                 \SREQ (0x02, 0x00, 0x00)
                             }
-                            ElseIf ((_T_1 == 0x0211))
+                            Case (0x0211)
                             {
                                 \SREQ (0x02, 0x01, 0x00)
                             }
-                            ElseIf ((_T_1 == 0x0212))
+                            Case (0x0212)
                             {
                                 \SREQ (0x02, 0x02, 0x00)
                             }
-                            ElseIf ((_T_1 == 0x0300))
+                            Case (0x0300)
                             {
                                 Local2 = 0x01000000
                             }
-                            ElseIf ((_T_1 == 0x0301))
+                            Case (0x0301)
                             {
                                 If ((\TBTS == 0x01))
                                 {
@@ -18496,7 +18395,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                     Local2 = (0x02 + 0x80000000)
                                 }
                             }
-                            ElseIf ((_T_1 == 0x0302))
+                            Case (0x0302)
                             {
                                 If ((\TBTS == 0x01))
                                 {
@@ -18507,12 +18406,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                     Local2 = (0x02 + 0x80000000)
                                 }
                             }
-                            Else
+                            Default
                             {
                                 Local2 = (0x01 + 0x80000000)
                             }
 
-                            Break
                         }
 
                         Return (Local2)
@@ -19040,60 +18938,65 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     Mutex (EHLD, 0x00)
     Method (TBTD, 1, Serialized)
     {
-        Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
         ADBG ("TBTD")
-        While (One)
+        Switch (ToInteger (Arg0))
         {
-            _T_0 = ToInteger (Arg0)
-            If ((Match (Package (0x08)
-                            {
-                                0x01, 
-                                0x02, 
-                                0x03, 
-                                0x04, 
-                                0x05, 
-                                0x06, 
-                                0x07, 
-                                0x08
-                            }, MEQ, _T_0, MTR, Zero, Zero) != Ones))
+            Case (Package (0x08)
+                {
+                    0x01, 
+                    0x02, 
+                    0x03, 
+                    0x04, 
+                    0x05, 
+                    0x06, 
+                    0x07, 
+                    0x08
+                }
+
+)
             {
                 Local0 = 0x1C
             }
-            ElseIf ((Match (Package (0x08)
-                            {
-                                0x09, 
-                                0x0A, 
-                                0x0B, 
-                                0x0C, 
-                                0x0D, 
-                                0x0E, 
-                                0x0F, 
-                                0x10
-                            }, MEQ, _T_0, MTR, Zero, Zero) != Ones))
+            Case (Package (0x08)
+                {
+                    0x09, 
+                    0x0A, 
+                    0x0B, 
+                    0x0C, 
+                    0x0D, 
+                    0x0E, 
+                    0x0F, 
+                    0x10
+                }
+
+)
             {
                 Local0 = 0x1D
             }
-            ElseIf ((Match (Package (0x04)
-                            {
-                                0x11, 
-                                0x12, 
-                                0x13, 
-                                0x14
-                            }, MEQ, _T_0, MTR, Zero, Zero) != Ones))
+            Case (Package (0x04)
+                {
+                    0x11, 
+                    0x12, 
+                    0x13, 
+                    0x14
+                }
+
+)
             {
                 Local0 = 0x1B
             }
-            ElseIf ((Match (Package (0x03)
-                            {
-                                0x15, 
-                                0x16, 
-                                0x17
-                            }, MEQ, _T_0, MTR, Zero, Zero) != Ones))
+            Case (Package (0x03)
+                {
+                    0x15, 
+                    0x16, 
+                    0x17
+                }
+
+)
             {
                 Local0 = 0x01
             }
 
-            Break
         }
 
         ADBG ("Device no")
@@ -19103,105 +19006,102 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
     Method (TBTF, 1, Serialized)
     {
-        Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
         ADBG ("TBTF")
-        While (One)
+        Switch (ToInteger (Arg0))
         {
-            _T_0 = ToInteger (Arg0)
-            If ((_T_0 == 0x01))
+            Case (0x01)
             {
                 Local0 = (\RPA1 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x02))
+            Case (0x02)
             {
                 Local0 = (\RPA2 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x03))
+            Case (0x03)
             {
                 Local0 = (\RPA3 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x04))
+            Case (0x04)
             {
                 Local0 = (\RPA4 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x05))
+            Case (0x05)
             {
                 Local0 = (\RPA5 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x06))
+            Case (0x06)
             {
                 Local0 = (\RPA6 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x07))
+            Case (0x07)
             {
                 Local0 = (\RPA7 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x08))
+            Case (0x08)
             {
                 Local0 = (\RPA8 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x09))
+            Case (0x09)
             {
                 Local0 = (\RPA9 & 0x0F)
             }
-            ElseIf ((_T_0 == 0x0A))
+            Case (0x0A)
             {
                 Local0 = (\RPAA & 0x0F)
             }
-            ElseIf ((_T_0 == 0x0B))
+            Case (0x0B)
             {
                 Local0 = (\RPAB & 0x0F)
             }
-            ElseIf ((_T_0 == 0x0C))
+            Case (0x0C)
             {
                 Local0 = (\RPAC & 0x0F)
             }
-            ElseIf ((_T_0 == 0x0D))
+            Case (0x0D)
             {
                 Local0 = (\RPAD & 0x0F)
             }
-            ElseIf ((_T_0 == 0x0E))
+            Case (0x0E)
             {
                 Local0 = (\RPAE & 0x0F)
             }
-            ElseIf ((_T_0 == 0x0F))
+            Case (0x0F)
             {
                 Local0 = (\RPAF & 0x0F)
             }
-            ElseIf ((_T_0 == 0x10))
+            Case (0x10)
             {
                 Local0 = (\RPAG & 0x0F)
             }
-            ElseIf ((_T_0 == 0x11))
+            Case (0x11)
             {
                 Local0 = (\RPAH & 0x0F)
             }
-            ElseIf ((_T_0 == 0x12))
+            Case (0x12)
             {
                 Local0 = (\RPAI & 0x0F)
             }
-            ElseIf ((_T_0 == 0x13))
+            Case (0x13)
             {
                 Local0 = (\RPAJ & 0x0F)
             }
-            ElseIf ((_T_0 == 0x14))
+            Case (0x14)
             {
                 Local0 = (\RPAK & 0x0F)
             }
-            ElseIf ((_T_0 == 0x15))
+            Case (0x15)
             {
                 Local0 = 0x00
             }
-            ElseIf ((_T_0 == 0x16))
+            Case (0x16)
             {
                 Local0 = 0x01
             }
-            ElseIf ((_T_0 == 0x17))
+            Case (0x17)
             {
                 Local0 = 0x02
             }
 
-            Break
         }
 
         ADBG ("Function no")
@@ -20136,11 +20036,9 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     Name (GLCK, 0x00)
     Method (GUAM, 1, Serialized)
     {
-        Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
-        While (One)
+        Switch (ToInteger (Arg0))
         {
-            _T_0 = ToInteger (Arg0)
-            If ((_T_0 == 0x00))
+            Case (0x00)
             {
                 If ((GLCK == 0x01))
                 {
@@ -20163,7 +20061,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     }
                 }
             }
-            ElseIf ((_T_0 == 0x01))
+            Case (0x01)
             {
                 If ((GLCK == 0x00))
                 {
@@ -20194,12 +20092,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     }
                 }
             }
-            Else
+            Default
             {
                 Return (Zero)
             }
 
-            Break
         }
 
         UAMS = (Arg0 && !PWRS)
@@ -20345,7 +20242,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     OSYS = 0x07D9
                 }
 
-                If(\_OSI("Windows 2012"))
+                If (\_OSI ("Windows 2012"))
                 {
                     \WIN8 = 0x01
                     OSYS = 0x07DC
@@ -20357,7 +20254,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                     OSYS = 0x07DD
                 }
 
-                If (LOr(\_OSI("Darwin"), \_OSI("Windows 2015")))
+                If (LOr(\_OSI ("Darwin"), \_OSI ("Windows 2015")))
                 {
                     \WIN8 = 0x01
                     OSYS = 0x07DF
@@ -20946,130 +20843,127 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (NTFY, 1, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             ADBG ("NTFY")
             If ((NOHP == 0x01))
             {
-                While (One)
+                Switch (ToInteger (Arg0))
                 {
-                    _T_0 = ToInteger (Arg0)
-                    If ((_T_0 == 0x01))
+                    Case (0x01)
                     {
                         ADBG ("Notify RP01")
                         Notify (\_SB.PCI0.RP01, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x02))
+                    Case (0x02)
                     {
                         ADBG ("Notify RP02")
                         Notify (\_SB.PCI0.RP02, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x03))
+                    Case (0x03)
                     {
                         ADBG ("Notify RP03")
                         Notify (\_SB.PCI0.RP03, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x04))
+                    Case (0x04)
                     {
                         ADBG ("Notify RP04")
                         Notify (\_SB.PCI0.RP04, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x05))
+                    Case (0x05)
                     {
                         ADBG ("Notify RP05")
                         Notify (\_SB.PCI0.RP05, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x06))
+                    Case (0x06)
                     {
                         ADBG ("Notify RP06")
                         Notify (\_SB.PCI0.RP06, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x07))
+                    Case (0x07)
                     {
                         ADBG ("Notify RP07")
                         Notify (\_SB.PCI0.RP07, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x08))
+                    Case (0x08)
                     {
                         ADBG ("Notify RP08")
                         Notify (\_SB.PCI0.RP08, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x09))
+                    Case (0x09)
                     {
                         ADBG ("Notify RP09")
                         Notify (\_SB.PCI0.RP09, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x0A))
+                    Case (0x0A)
                     {
                         ADBG ("Notify RP10")
                         Notify (\_SB.PCI0.RP10, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x0B))
+                    Case (0x0B)
                     {
                         ADBG ("Notify RP11")
                         Notify (\_SB.PCI0.RP11, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x0C))
+                    Case (0x0C)
                     {
                         ADBG ("Notify RP12")
                         Notify (\_SB.PCI0.RP12, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x0D))
+                    Case (0x0D)
                     {
                         ADBG ("Notify RP13")
                         Notify (\_SB.PCI0.RP13, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x0E))
+                    Case (0x0E)
                     {
                         ADBG ("Notify RP14")
                         Notify (\_SB.PCI0.RP14, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x0F))
+                    Case (0x0F)
                     {
                         ADBG ("Notify RP15")
                         Notify (\_SB.PCI0.RP15, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x10))
+                    Case (0x10)
                     {
                         ADBG ("Notify RP16")
                         Notify (\_SB.PCI0.RP16, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x11))
+                    Case (0x11)
                     {
                         ADBG ("Notify RP17")
                         Notify (\_SB.PCI0.RP17, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x12))
+                    Case (0x12)
                     {
                         ADBG ("Notify RP18")
                         Notify (\_SB.PCI0.RP18, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x13))
+                    Case (0x13)
                     {
                         ADBG ("Notify RP19")
                         Notify (\_SB.PCI0.RP19, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x14))
+                    Case (0x14)
                     {
                         ADBG ("Notify RP20")
                         Notify (\_SB.PCI0.RP20, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x15))
+                    Case (0x15)
                     {
                         ADBG ("Notify PEG0")
                         Notify (\_SB.PCI0.PEG0, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x16))
+                    Case (0x16)
                     {
                         ADBG ("Notify PEG1")
                         Notify (\_SB.PCI0.PEG1, 0x00)
                     }
-                    ElseIf ((_T_0 == 0x17))
+                    Case (0x17)
                     {
                         ADBG ("Notify PEG2")
                         Notify (\_SB.PCI0.PEG2, 0x00)
                     }
 
-                    Break
                 }
             }
 
@@ -22913,8 +22807,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
     {
         Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
         {
-            Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             If (PCIC (Arg0))
             {
                 Return (PCID (Arg0, Arg1, Arg2, Arg3))
@@ -22942,20 +22834,25 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                 If ((Arg2 == One))
                 {
-                    While (One)
+                    Switch (ToInteger (DerefOf (Arg3 [0x00])))
                     {
-                        _T_0 = ToInteger (DerefOf (Arg3 [0x00]))
-                        If ((_T_0 == 0x00)) {}
-                        ElseIf ((_T_0 == 0x01))
+                        Case (0x00)
+                        {
+                        }
+                        Case (0x01)
                         {
                             If (CondRefOf (\_SB.SLPB))
                             {
                                 Notify (\_SB.SLPB, 0x80)
                             }
                         }
-                        ElseIf ((_T_0 == 0x02)) {}
-                        ElseIf ((_T_0 == 0x03)) {}
-                        ElseIf ((_T_0 == 0x04))
+                        Case (0x02)
+                        {
+                        }
+                        Case (0x03)
+                        {
+                        }
+                        Case (0x04)
                         {
                             If (CondRefOf (\_SB.SLPB))
                             {
@@ -22963,7 +22860,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             }
                         }
 
-                        Break
                     }
                 }
 
@@ -22971,10 +22867,9 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
             }
             ElseIf ((Arg0 == ToUUID ("7574eb17-d1a2-4cc2-9929-4a08fcc29107")))
             {
-                While (One)
+                Switch (ToInteger (Arg2))
                 {
-                    _T_1 = ToInteger (Arg2)
-                    If ((_T_1 == 0x00))
+                    Case (0x00)
                     {
                         If ((Arg1 == Zero))
                         {
@@ -22991,15 +22886,15 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             })
                         }
                     }
-                    ElseIf ((_T_1 == 0x01))
+                    Case (0x01)
                     {
                         Return (\_SB.PCI0.WHIT ())
                     }
-                    ElseIf ((_T_1 == 0x02))
+                    Case (0x02)
                     {
                         Return (\_SB.PCI0.SELF ())
                     }
-                    Else
+                    Default
                     {
                         Return (Buffer (0x01)
                         {
@@ -23007,7 +22902,6 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         })
                     }
 
-                    Break
                 }
             }
             Else
@@ -23021,26 +22915,23 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (WGST, 0, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             If (CondRefOf (VDID))
             {
-                While (One)
+                Switch (ToInteger (VDID))
                 {
-                    _T_0 = ToInteger (VDID)
-                    If ((_T_0 == 0x093C8086))
+                    Case (0x093C8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x097C8086))
+                    Case (0x097C8086)
                     {
                         Return (0x01)
                     }
-                    Else
+                    Default
                     {
                         Return (0x00)
                     }
 
-                    Break
                 }
             }
             Else
@@ -23232,74 +23123,71 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (WIST, 0, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             If (CondRefOf (VDID))
             {
-                While (One)
+                Switch (ToInteger (VDID))
                 {
-                    _T_0 = ToInteger (VDID)
-                    If ((_T_0 == 0x095A8086))
+                    Case (0x095A8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x095B8086))
+                    Case (0x095B8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x31658086))
+                    Case (0x31658086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x31668086))
+                    Case (0x31668086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B18086))
+                    Case (0x08B18086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B28086))
+                    Case (0x08B28086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B38086))
+                    Case (0x08B38086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B48086))
+                    Case (0x08B48086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F38086))
+                    Case (0x24F38086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F48086))
+                    Case (0x24F48086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F58086))
+                    Case (0x24F58086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F68086))
+                    Case (0x24F68086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24FD8086))
+                    Case (0x24FD8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24FB8086))
+                    Case (0x24FB8086)
                     {
                         Return (0x01)
                     }
-                    Else
+                    Default
                     {
                         Return (0x00)
                     }
 
-                    Break
                 }
             }
             Else
@@ -23494,74 +23382,71 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (WIST, 0, Serialized)
         {
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             If (CondRefOf (VDID))
             {
-                While (One)
+                Switch (ToInteger (VDID))
                 {
-                    _T_0 = ToInteger (VDID)
-                    If ((_T_0 == 0x095A8086))
+                    Case (0x095A8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x095B8086))
+                    Case (0x095B8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x31658086))
+                    Case (0x31658086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x31668086))
+                    Case (0x31668086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B18086))
+                    Case (0x08B18086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B28086))
+                    Case (0x08B28086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B38086))
+                    Case (0x08B38086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x08B48086))
+                    Case (0x08B48086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F38086))
+                    Case (0x24F38086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F48086))
+                    Case (0x24F48086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F58086))
+                    Case (0x24F58086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24F68086))
+                    Case (0x24F68086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24FD8086))
+                    Case (0x24FD8086)
                     {
                         Return (0x01)
                     }
-                    ElseIf ((_T_0 == 0x24FB8086))
+                    Case (0x24FB8086)
                     {
                         Return (0x01)
                     }
-                    Else
+                    Default
                     {
                         Return (0x00)
                     }
 
-                    Break
                 }
             }
             Else
@@ -27181,7 +27066,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
         {
             Name (_HID, EisaId ("PNP0C14"))  // _HID: Hardware ID
             Name (_UID, 0x03)  // _UID: Unique ID
-            Name (_WDG, Buffer (0x3C)
+            Name (_WDG, /**** Is ResourceTemplate, but EndTag not at buffer end ****/ Buffer (0x3C)
             {
                 /* 0000 */  0x79, 0x36, 0x4D, 0x8F, 0x9E, 0x74, 0x79, 0x44,
                 /* 0008 */  0x9B, 0x16, 0xC6, 0x26, 0x01, 0xFD, 0x25, 0xF0,
@@ -30060,32 +29945,28 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
         Method (DYTC, 1, Serialized)
         {
-            Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
-            Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
             Local0 = Arg0
             Local1 = 0x00
             ADBG (Concatenate ("DYTC STT=", ToHexString (Local0)))
             If ((\WNTF && \TATC))
             {
-                While (One)
+                Switch (ToInteger ((Local0 & 0x01FF)))
                 {
-                    _T_0 = ToInteger ((Local0 & 0x01FF))
-                    If ((_T_0 == 0x00))
+                    Case (0x00)
                     {
                         Local1 = (0x01 << 0x08)
                         Local1 |= (0x03 << 0x1C)
                         Local1 |= (0x01 << 0x10)
                         Local1 |= 0x01
                     }
-                    ElseIf ((_T_0 == 0x01))
+                    Case (0x01)
                     {
                         Local2 = ((Local0 >> 0x0C) & 0x0F)
                         Local3 = ((Local0 >> 0x10) & 0x0F)
                         Local4 = ((Local0 >> 0x14) & 0x01)
-                        While (One)
+                        Switch (Local2)
                         {
-                            _T_1 = Local2
-                            If ((_T_1 == 0x01))
+                            Case (0x01)
                             {
                                 If ((Local3 != 0x0F))
                                 {
@@ -30103,7 +29984,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                     \VCQL = 0x01
                                 }
                             }
-                            ElseIf ((_T_1 == 0x04))
+                            Case (0x04)
                             {
                                 If ((Local3 != 0x0F))
                                 {
@@ -30121,7 +30002,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                     \VSTP = 0x01
                                 }
                             }
-                            ElseIf ((_T_1 == 0x08))
+                            Case (0x08)
                             {
                                 If ((Local3 != 0x0F))
                                 {
@@ -30139,7 +30020,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                     \VDMC = 0x01
                                 }
                             }
-                            ElseIf ((_T_1 == 0x00))
+                            Case (0x00)
                             {
                                 If ((Local3 != 0x0F))
                                 {
@@ -30148,14 +30029,13 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                                     Return (Local1)
                                 }
                             }
-                            Else
+                            Default
                             {
                                 Local1 = (0x01 << 0x01)
                                 ADBG (Concatenate ("DYTC END=", ToHexString (Local1)))
                                 Return (Local1)
                             }
 
-                            Break
                         }
 
                         If ((\VSTP == 0x01))
@@ -30240,7 +30120,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                             \_SB.PCI0.LPCB.EC.HKEY.MHKQ (0x6032)
                         }
                     }
-                    ElseIf ((_T_0 == 0x02))
+                    Case (0x02)
                     {
                         Local5 = \VSTD
                         Local5 |= (\VCQL << 0x01)
@@ -30264,17 +30144,17 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         Local1 |= (Local5 << 0x10)
                         Local1 |= 0x01
                     }
-                    ElseIf ((_T_0 == 0x03))
+                    Case (0x03)
                     {
                         Local1 = (FCAP << 0x10)
                         Local1 |= 0x01
                     }
-                    ElseIf ((_T_0 == 0x04))
+                    Case (0x04)
                     {
                         Local1 = (MCAP << 0x10)
                         Local1 |= 0x01
                     }
-                    ElseIf ((_T_0 == 0x05))
+                    Case (0x05)
                     {
                         If ((0x00 != 0x01))
                         {
@@ -30284,12 +30164,12 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
 
                         Local1 |= 0x01
                     }
-                    ElseIf ((_T_0 == 0x0100))
+                    Case (0x0100)
                     {
                         Local1 = (0x1001 << 0x10)
                         Local1 |= 0x01
                     }
-                    ElseIf ((_T_0 == 0x01FF))
+                    Case (0x01FF)
                     {
                         \VCQL = 0x00
                         \VTIO = 0x00
@@ -30328,12 +30208,11 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
                         Local1 |= (Local5 << 0x10)
                         Local1 |= 0x01
                     }
-                    Else
+                    Default
                     {
                         Local1 = (0x02 << 0x01)
                     }
 
-                    Break
                 }
             }
             Else
