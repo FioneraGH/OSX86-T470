@@ -1,17 +1,17 @@
 /*
  * Intel ACPI Component Architecture
- * AML/ASL+ Disassembler version 20161210-64(RM)
- * Copyright (c) 2000 - 2016 Intel Corporation
+ * AML/ASL+ Disassembler version 20180427 (64-bit version)(RM)
+ * Copyright (c) 2000 - 2018 Intel Corporation
  * 
  * Disassembling to symbolic ASL+ operators
  *
- * Disassembly of SSDT-5-CpuSsdt.aml, Fri Apr 20 09:19:38 2018
+ * Disassembly of SSDT-5-CpuSsdt.aml, Sat Jul 21 10:18:12 2018
  *
  * Original Table Header:
  *     Signature        "SSDT"
  *     Length           0x000017AE (6062)
  *     Revision         0x02
- *     Checksum         0x18
+ *     Checksum         0x67
  *     OEM ID           "LENOVO"
  *     OEM Table ID     "CpuSsdt"
  *     OEM Revision     0x00003000 (12288)
@@ -44,25 +44,25 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
         Name (SSDT, Package (0x15)
         {
             "CPU0IST ", 
-            0x5B505098, 
+            0x5B506098, 
             0x000006B4, 
             "APIST   ", 
-            0x5B4AB018, 
+            0x5B4AC018, 
             0x00000D14, 
             "CPU0CST ", 
-            0x5B4AC698, 
+            0x5B4AD698, 
             0x000003FF, 
             "APCST   ", 
-            0x5B4AA018, 
+            0x5B4AB018, 
             0x0000030A, 
             "CPU0HWP ", 
-            0x5B505B18, 
+            0x5B506B18, 
             0x000000BA, 
             "APHWP   ", 
-            0x5B4AA418, 
+            0x5B4AB418, 
             0x00000317, 
             "HWPLVT  ", 
-            0x5B4AC018, 
+            0x5B4AD018, 
             0x00000628
         })
         Name (\PC00, 0x80000000)
@@ -87,7 +87,7 @@ DefinitionBlock ("", "SSDT", 2, "LENOVO", "CpuSsdt", 0x00003000)
     Scope (\_PR)
     {
         Name (CTPC, Zero)
-        OperationRegion (PNVS, SystemMemory, 0x50659000, 0x006C)
+        OperationRegion (PNVS, SystemMemory, 0x50B68000, 0x006C)
         Field (PNVS, AnyAcc, Lock, Preserve)
         {
             PGRV,   8, 

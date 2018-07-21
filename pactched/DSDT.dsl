@@ -20660,7 +20660,7 @@ DefinitionBlock ("", "DSDT", 2, "LENOVO", "SKL     ", 0x00000000)
         }
     }
 
-    Name (TDMA, 0x5B4AE000)
+    Name (TDMA, 0x5B4AF000)
     Name (TDPG, 0x80000000)
     Name (TDTI, 0x80000000)
     Scope (\_GPE)
